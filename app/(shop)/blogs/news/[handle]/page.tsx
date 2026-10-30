@@ -1,1 +1,28 @@
-export default async function Article({params}:{params:Promise<{handle:string}>}){const {handle}=await params;const title=handle.split("-").map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(" ");return <article className="section" style={{maxWidth:"900px",margin:"0 auto"}}><p className="eyebrow">Al Afrah Journal</p><h1 style={{fontFamily:"Georgia,serif",fontSize:"60px",fontWeight:400,lineHeight:1.05}}>{title}</h1><div style={{lineHeight:1.9,fontSize:"17px"}}><p>Natural stone brings a singular sense of permanence, character and craft to a room. Choosing marble should begin with the way you live, the light in your space, and the finish you want to enjoy for years.</p><h2>Choosing the right stone</h2><p>Travertine offers warm, architectural texture. Calacatta creates dramatic contrast. Onyx delivers depth and translucency, while Arabescato introduces expressive movement through every surface.</p><h2>Dimensions and proportion</h2><p>Measure access routes and usable floor area before selecting a table size. A bespoke workshop can refine proportions to your room without compromising comfort or visual balance.</p></div></article>}
+export default async function Article({ params }: { params: Promise<{ handle: string }> }) {
+  const { handle } = await params;
+  const title = handle
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+
+  return (
+    <article>
+      <h1>{title}</h1>
+      <p>
+        Start with how the table will be used, the light in the room, and whether you want a honed or polished finish.
+        Stone choice is a practical decision: porosity, veining, thickness and how the slab is bookmatched.
+      </p>
+      <h2>Choosing the stone</h2>
+      <p>
+        Travertine has open pores and a warm body. Calacatta is a white ground with grey veins. Onyx is often
+        translucent and can be backlit. Arabescato has moving grey veins on white. Black Marquina, Emperador Dark,
+        Jungle Green and Red Travertine are kept for contrast and outdoor or wet-area work as specified.
+      </p>
+      <h2>Size</h2>
+      <p>
+        Measure doorways, lifts and the floor area before you lock length and width. The workshop can cut to your
+        dimensions; send the room photos with the quote request.
+      </p>
+    </article>
+  );
+}

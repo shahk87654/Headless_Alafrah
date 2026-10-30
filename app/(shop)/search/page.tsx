@@ -4,9 +4,57 @@ import { formatAED, searchProducts } from "../../../lib/catalog";
 
 export default async function Search({ searchParams }: { searchParams: Promise<{ q?: string; after?: string }> }) {
   const { q = "", after } = await searchParams;
-  const result = q ? await searchProducts(q, 24, after).catch(() => ({ products: [], pageInfo: { hasNextPage: false, endCursor: null } })) : { products: [], pageInfo: { hasNextPage: false, endCursor: null } };
-  const nextUrl = result.pageInfo.hasNextPage && result.pageInfo.endCursor ? `/search?q=${encodeURIComponent(q)}&after=${encodeURIComponent(result.pageInfo.endCursor)}` : null;
+  const result = q
+    ? await searchProducts(q, 24, after).catch(() => ({ products: [], pageInfo: { hasNextPage: false, endCursor: null } }))
+    : { products: [], pageInfo: { hasNextPage: false, endCursor: null } };
+  const nextUrl =
+    result.pageInfo.hasNextPage && result.pageInfo.endCursor
+      ? `/search?q=${encodeURIComponent(q)}&after=${encodeURIComponent(result.pageInfo.endCursor)}`
+      : null;
 
-  return <section className="section"><p className="eyebrow">Search the collection</p><h1 style={{ fontFamily: "Georgia,serif", fontSize: "58px", fontWeight: 400 }}>{q ? `Results for “${q}”` : "Search"}</h1><form action="/search" className="search-page-form"><label className="sr-only" htmlFor="q">Search</label><input id="q" name="q" defaultValue={q} placeholder="Search tables, materials, accessories" /><button className="button button-dark">Search</button></form>{q && <p className="search-results-count">{result.products.length} results from Shopify</p>}<div className="product-card-grid">{result.products.map((product) => <Link className="shopify-product-card" key={product.id} href={`/products/${product.handle}`}><div className="shopify-product-image">{product.featuredImage ? <Image src={product.featuredImage.url} alt={product.featuredImage.altText ?? product.title} fill sizes="(max-width:760px) 50vw,25vw" /> : <span className="product-placeholder">Al Afrah</span>}</div><div className="shopify-product-meta"><span>{product.availableForSale ? "Available" : "Made to order"}</span><h3>{product.title}</h3><strong>{formatAED(product.priceRange.minVariantPrice.amount)}</strong></div></Link>)}</div>{nextUrl && <nav className="pagination" aria-label="Search pagination"><Link href={nextUrl}>Next</Link></nav>}</section>;
+  return (
+    <section>
+      <h1>{q ? `${result.products.length} results for ‘${q}’` : "Search"}</h1>
+      <form action="/search">
+        <label className="sr-only" htmlFor="q">
+          Search
+        </label>
+        <input id="q" name="q" defaultValue={q} placeholder="Search tables, materials, accessories" />
+        <button type="submit">Search</button>
+      </form>
+      {q && result.products.length === 0 && (
+        <div>
+          <p>No products match that search. Try a stone name, or request a custom piece.</p>
+          <Link href="/collections/coffee-tables">Coffee tables</Link>
+          <Link href="/collections/dining-tables">Dining tables</Link>
+          <Link href="/collections/travertine-marble">Travertine</Link>
+          <Link href="/custom-table">Request a custom piece</Link>
+        </div>
+      )}
+      <ul>
+        {result.products.map((product) => (
+          <li key={product.id}>
+            <Link href={`/products/${product.handle}`}>
+              {product.featuredImage ? (
+                <Image
+                  src={product.featuredImage.url}
+                  alt={product.featuredImage.altText ?? product.title}
+                  width={product.featuredImage.width ?? 800}
+                  height={product.featuredImage.height ?? 1000}
+                  sizes="(max-width:760px) 50vw, 25vw"
+                />
+              ) : null}
+              <h2>{product.title}</h2>
+              <p>{formatAED(product.priceRange.minVariantPrice.amount)}</p>
+            </Link>
+          </li>
+        ))}
+      </ul>
+      {nextUrl && (
+        <nav aria-label="Search pagination">
+          <Link href={nextUrl}>Load more</Link>
+        </nav>
+      )}
+    </section>
+  );
 }
-

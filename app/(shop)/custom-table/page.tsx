@@ -1,3 +1,43 @@
 "use client";
+
 import { useState } from "react";
-export default function CustomTable(){const [material,setMaterial]=useState("Calacatta");const [length,setLength]=useState(180);return <section className="section custom-feature"><div className="custom-feature-image" style={{background:"linear-gradient(135deg,#d6ccba,#f4f1e9)",minHeight:"620px"}}><div style={{position:"absolute",left:"20%",right:"20%",bottom:"24%",height:"26%",borderRadius:"8px",background:material=== "Onyx"?"#322d24":material=== "Travertine"?"#b79f7d":"#ece7dc",boxShadow:"0 35px 30px rgba(14,26,43,.12)"}} /></div><div className="custom-feature-copy"><p className="eyebrow">Bespoke quote</p><h1 style={{fontSize:"50px",margin:"0 0 15px",fontFamily:"Georgia,serif",fontWeight:400}}>Design your table</h1><label><strong>Material</strong><select value={material} onChange={e=>setMaterial(e.target.value)} style={{width:"100%",height:"48px",margin:"8px 0 20px",padding:"0 12px",background:"white",border:"1px solid var(--stone3)"}}><option>Calacatta</option><option>Travertine</option><option>Onyx</option><option>Arabescato</option><option>Jungle Green</option></select></label><label><strong>Length · {length} cm</strong><input aria-label="Table length" type="range" min="80" max="300" value={length} onChange={e=>setLength(Number(e.target.value))} style={{width:"100%",margin:"15px 0 25px"}} /></label><a className="button button-dark" href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "971500000000"}?text=${encodeURIComponent(`Hello, I would like a quote for a custom table in ${material}, ${length}cm long.`)}`} target="_blank">Request a quote</a></div></section>}
+
+export default function CustomTable() {
+  const [material, setMaterial] = useState("Calacatta");
+  const [length, setLength] = useState(180);
+
+  return (
+    <section>
+      <h1>Design a custom table</h1>
+      <p>Choose a stone and a length. We reply with a quote and a reference number.</p>
+      <label>
+        Material
+        <select value={material} onChange={(event) => setMaterial(event.target.value)}>
+          <option>Calacatta</option>
+          <option>Travertine</option>
+          <option>Onyx</option>
+          <option>Arabescato</option>
+          <option>Jungle Green</option>
+        </select>
+      </label>
+      <label>
+        Length {length} cm
+        <input
+          aria-label="Table length"
+          type="range"
+          min={80}
+          max={300}
+          value={length}
+          onChange={(event) => setLength(Number(event.target.value))}
+        />
+      </label>
+      <a
+        href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "971500000000"}?text=${encodeURIComponent(`Hello, I would like a quote for a custom table in ${material}, ${length} cm long.`)}`}
+        target="_blank"
+        rel="noreferrer"
+      >
+        Request a quote
+      </a>
+    </section>
+  );
+}

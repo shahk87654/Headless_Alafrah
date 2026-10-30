@@ -1,2 +1,15 @@
 import { SiteShell } from "../../components/SiteShell";
-export default function Account(){return <SiteShell><section className="section" style={{minHeight:"520px",textAlign:"center"}}><p className="eyebrow">Your account</p><h1 style={{fontFamily:"Georgia,serif",fontSize:"58px",fontWeight:400}}>Sign in with Shopify</h1><p>Customer account configuration is required before secure order history and profile access can be enabled.</p><button className="button button-dark" disabled>Sign in unavailable</button></section></SiteShell>}
+
+export default function Account() {
+  return (
+    <SiteShell>
+      <section>
+        <h1>Account</h1>
+        <p>Customer account configuration is required before order history and saved addresses can be shown.</p>
+        <button type="button" disabled>
+          Sign in unavailable
+        </button>
+      </section>
+    </SiteShell>
+  );
+}

@@ -1,1 +1,39 @@
-export default async function ContentPage({params}:{params:Promise<{handle:string}>}){const {handle}=await params;const title=handle.split("-").map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(" ");return <section className="section" style={{maxWidth:"900px",margin:"0 auto"}}><p className="eyebrow">Al Afrah Technical</p><h1 style={{fontFamily:"Georgia,serif",fontSize:"58px",fontWeight:400}}>{title}</h1><div style={{lineHeight:1.9}}>{handle=== "contact"?<><p>Visit our Dubai studio or speak with our team about a project.</p><form style={{display:"grid",gap:"12px",maxWidth:"600px"}}><input aria-label="Name" placeholder="Name" style={{height:"48px",padding:"0 12px",border:"1px solid var(--stone3)"}}/><input aria-label="Email" type="email" placeholder="Email" style={{height:"48px",padding:"0 12px",border:"1px solid var(--stone3)"}}/><textarea aria-label="Message" placeholder="How can we help?" rows={6} style={{padding:"12px",border:"1px solid var(--stone3)"}}/><button className="button button-dark" type="submit">Send enquiry</button></form></>:<><p>For complete, up-to-date information about our services and policies, this page is rendered from Shopify when the Storefront API is connected.</p><h2>Client service</h2><p>Our Dubai team is available to discuss bespoke dimensions, material selection, delivery and installation across the UAE.</p></>}</div></section>}
+export default async function ContentPage({ params }: { params: Promise<{ handle: string }> }) {
+  const { handle } = await params;
+  const title = handle
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+
+  return (
+    <section>
+      <h1>{title}</h1>
+      {handle === "contact" ? (
+        <>
+          <p>Workshop and store in Dubai. Use the form or WhatsApp for sizes, stones and lead times.</p>
+          <form>
+            <label>
+              Name
+              <input aria-label="Name" name="name" required />
+            </label>
+            <label>
+              Email
+              <input aria-label="Email" name="email" type="email" required />
+            </label>
+            <label>
+              Message
+              <textarea aria-label="Message" name="message" rows={6} required />
+            </label>
+            <button type="submit">Send</button>
+          </form>
+        </>
+      ) : (
+        <>
+          <p>Full copy for this page is loaded from Shopify when the Storefront API is connected.</p>
+          <h2>Workshop</h2>
+          <p>The Dubai team can confirm dimensions, material, delivery and installation across the UAE.</p>
+        </>
+      )}
+    </section>
+  );
+}

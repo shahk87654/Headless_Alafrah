@@ -1,3 +1,25 @@
-import Image from "next/image";import Link from "next/link";
-const posts=[{h:"custom-marble-tables-uae-buying-guide",t:"Custom Marble Tables in the UAE: A Complete Buying Guide",tag:"Buying Guide"},{h:"marble-coffee-table-designs-uae",t:"Marble Coffee Table Designs for UAE Homes",tag:"Design"},{h:"the-countries-made-beige-travertine-marble",t:"The Countries That Produce Beige Travertine Marble",tag:"Materials"}];
-export default function Magazine(){return <section className="section"><p className="eyebrow">The Al Afrah Journal</p><h1 style={{fontFamily:"Georgia,serif",fontSize:"58px",fontWeight:400}}>Magazine</h1><div className="article-grid" style={{marginTop:"40px"}}>{posts.map((p,i)=><Link key={p.h} href={`/blogs/news/${p.h}`}><Image src={`https://images.unsplash.com/photo-${i===0?"1600607687920-4e2a09cf159d":i===1?"1600210492486-724fe5c67fb0":"1616486338812-3dadae4b4ace"}?auto=format&fit=crop&w=1000&q=85`} alt={p.t} width={800} height={520}/><span>{p.tag}</span><h3>{p.t}</h3></Link>)}</div></section>}
+import Link from "next/link";
+
+const posts = [
+  { h: "custom-marble-tables-uae-buying-guide", t: "Custom marble tables in the UAE: a buying guide", tag: "Buying guide" },
+  { h: "marble-coffee-table-designs-uae", t: "Marble coffee table designs for UAE homes", tag: "Design" },
+  { h: "the-countries-made-beige-travertine-marble", t: "Where beige travertine marble is quarried", tag: "Materials" },
+];
+
+export default function Magazine() {
+  return (
+    <section>
+      <h1>Magazine</h1>
+      <ul>
+        {posts.map((post) => (
+          <li key={post.h}>
+            <Link href={`/blogs/news/${post.h}`}>
+              <p>{post.tag}</p>
+              <h2>{post.t}</h2>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}

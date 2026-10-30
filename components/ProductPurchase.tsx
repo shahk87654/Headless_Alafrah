@@ -30,38 +30,135 @@ export function ProductPurchase({ product }: { product: ShopifyProduct }) {
         body: JSON.stringify({ action, variantId, quantity, cartId: savedCart?.id }),
       });
       const data = await response.json();
-      if (!response.ok || data.error) throw new Error(data.error ?? "Unable to update the cart.");
-      localStorage.setItem("alafrah-cart", JSON.stringify({ id: data.cartId, checkoutUrl: data.checkoutUrl, totalQuantity: data.totalQuantity }));
+      if (!response.ok || data.error) throw new Error(data.error ?? "The cart could not be updated. Try again.");
+      localStorage.setItem(
+        "alafrah-cart",
+        JSON.stringify({ id: data.cartId, checkoutUrl: data.checkoutUrl, totalQuantity: data.totalQuantity }),
+      );
       window.dispatchEvent(new Event("alafrah-cart-updated"));
       if (action === "buy") {
         window.location.assign(data.checkoutUrl);
       } else {
-        setMessage("Added to cart.");
+        setMessage("Added to cart");
       }
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Unable to update the cart.");
+      setMessage(error instanceof Error ? error.message : "The cart could not be updated. Try again.");
     } finally {
       setBusy(false);
     }
   }
 
+  const price = selectedVariant
+    ? new Intl.NumberFormat("en-AE", {
+        style: "currency",
+        currency: selectedVariant.price.currencyCode,
+        minimumFractionDigits: 0,
+      }).format(Number(selectedVariant.price.amount))
+    : "";
+
   return (
-    <div className="product-detail">
-      <div className="product-detail-gallery">
-        {images[activeImage] ? <Image src={images[activeImage].url} alt={images[activeImage].altText ?? product.title} fill sizes="(max-width:760px) 100vw,60vw" priority /> : <div className="product-placeholder">Al Afrah</div>}
-        {images.length > 1 && <div className="product-gallery-thumbs">{images.map((image, index) => <button type="button" key={`${image.url}-${index}`} className={activeImage === index ? "active" : ""} onClick={() => setActiveImage(index)} aria-label={`View image ${index + 1}`}><Image src={image.url} alt={image.altText ?? `${product.title} view ${index + 1}`} fill sizes="72px" /></button>)}</div>}
+    <article>
+      <div>
+        {images[activeImage] ? (
+          <Image
+            src={images[activeImage].url}
+            alt={images[activeImage].altText ?? product.title}
+            width={images[activeImage].width ?? 1200}
+            height={images[activeImage].height ?? 1500}
+            sizes="(max-width:760px) 100vw, 58vw"
+            priority
+          />
+        ) : (
+          <p>No photograph for this product yet.</p>
+        )}
+        {images.length > 1 && (
+          <div>
+            {images.map((image, index) => (
+              <button
+                type="button"
+                key={`${image.url}-${index}`}
+                aria-pressed={activeImage === index}
+                onClick={() => setActiveImage(index)}
+                aria-label={`View image ${index + 1}`}
+              >
+                <Image
+                  src={image.url}
+                  alt={image.altText ?? `${product.title} view ${index + 1}`}
+                  width={72}
+                  height={90}
+                />
+              </button>
+            ))}
+          </div>
+        )}
       </div>
-      <div className="product-detail-info">
-        <p className="eyebrow">{product.vendor ?? "Al Afrah Technical"}</p>
+      <div>
         <h1>{product.title}</h1>
-        <div className="product-detail-price">{selectedVariant && <><span>{new Intl.NumberFormat("en-AE", { style: "currency", currency: selectedVariant.price.currencyCode, minimumFractionDigits: 2 }).format(Number(selectedVariant.price.amount))}</span>{selectedVariant.compareAtPrice && Number(selectedVariant.compareAtPrice.amount) > Number(selectedVariant.price.amount) && <del>{new Intl.NumberFormat("en-AE", { style: "currency", currency: selectedVariant.compareAtPrice.currencyCode, minimumFractionDigits: 2 }).format(Number(selectedVariant.compareAtPrice.amount))}</del>}</>}</div>
-        <p className="vat-note">AED · VAT inclusive where applicable</p>
-        {product.descriptionHtml ? <div className="product-description" dangerouslySetInnerHTML={{ __html: product.descriptionHtml }} /> : <p className="product-description">{product.description}</p>}
-        {variants.length > 0 && <fieldset className="product-variants"><legend>Options</legend>{variants.map((variant) => <label className={variant.id === variantId ? "active" : ""} key={variant.id}>        <input type="radio" name="variant" value={variant.id} checked={variant.id === variantId} disabled={!variant.availableForSale} onChange={() => { setVariantId(variant.id); if (variant.image?.url) { const index = images.findIndex((image) => image.url === variant.image?.url); if (index >= 0) setActiveImage(index); } }} /><span>{variant.title}</span>{variants.length === 1 && variant.price.currencyCode === "AED" && <strong>{new Intl.NumberFormat("en-AE", { style: "currency", currency: "AED", minimumFractionDigits: 2 }).format(Number(variant.price.amount))}</strong>}</label>)}</fieldset>}
-        <div className="product-quantity"><span>Quantity</span><div><button type="button" aria-label="Decrease quantity" onClick={() => setQuantity((value) => Math.max(1, value - 1))}>−</button><strong>{quantity}</strong><button type="button" aria-label="Increase quantity" onClick={() => setQuantity((value) => value + 1)}>+</button></div></div>
-        <div className="product-actions"><button className="button button-outline-dark" type="button" disabled={busy || !product.availableForSale} onClick={() => submit("add")}>Add to Cart</button><button className="button button-dark" type="button" disabled={busy || !product.availableForSale} onClick={() => submit("buy")}>Buy Now</button></div>
-        {message && <p className="product-action-message" role="status">{message}</p>}
+        <p>
+          {price}
+          {selectedVariant?.compareAtPrice &&
+            Number(selectedVariant.compareAtPrice.amount) > Number(selectedVariant.price.amount) && (
+              <s>
+                {new Intl.NumberFormat("en-AE", {
+                  style: "currency",
+                  currency: selectedVariant.compareAtPrice.currencyCode,
+                  minimumFractionDigits: 0,
+                }).format(Number(selectedVariant.compareAtPrice.amount))}
+              </s>
+            )}
+        </p>
+        <p>Includes 5% VAT</p>
+        {product.descriptionHtml ? (
+          <div dangerouslySetInnerHTML={{ __html: product.descriptionHtml }} />
+        ) : (
+          <p>{product.description}</p>
+        )}
+        {variants.length > 0 && (
+          <fieldset>
+            <legend>Options</legend>
+            {variants.map((variant) => (
+              <label key={variant.id}>
+                <input
+                  type="radio"
+                  name="variant"
+                  value={variant.id}
+                  checked={variant.id === variantId}
+                  disabled={!variant.availableForSale}
+                  onChange={() => {
+                    setVariantId(variant.id);
+                    if (variant.image?.url) {
+                      const index = images.findIndex((image) => image.url === variant.image?.url);
+                      if (index >= 0) setActiveImage(index);
+                    }
+                  }}
+                />
+                <span>{variant.title}</span>
+              </label>
+            ))}
+          </fieldset>
+        )}
+        <div>
+          <span>Quantity</span>
+          <button type="button" aria-label="Decrease quantity" onClick={() => setQuantity((value) => Math.max(1, value - 1))}>
+            −
+          </button>
+          <strong>{quantity}</strong>
+          <button type="button" aria-label="Increase quantity" onClick={() => setQuantity((value) => value + 1)}>
+            +
+          </button>
+        </div>
+        <div>
+          <button type="button" disabled={busy || !product.availableForSale} onClick={() => submit("add")}>
+            Add to cart
+          </button>
+          <button type="button" disabled={busy || !product.availableForSale} onClick={() => submit("buy")}>
+            Checkout
+          </button>
+        </div>
+        {message && (
+          <p role="status">{message}</p>
+        )}
       </div>
-    </div>
+    </article>
   );
 }

@@ -1,1 +1,12 @@
-import { SiteShell } from "../../components/SiteShell";export default function Compare(){return <SiteShell><section className="section"><p className="eyebrow">Compare products</p><h1 style={{fontFamily:"Georgia,serif",fontSize:"58px",fontWeight:400}}>Product comparison</h1><p>Choose up to four products with the Shopify comparison controls.</p></section></SiteShell>}
+import { SiteShell } from "../../components/SiteShell";
+
+export default function Compare() {
+  return (
+    <SiteShell>
+      <section>
+        <h1>Compare products</h1>
+        <p>Add up to four products to compare material, size, price and lead time.</p>
+      </section>
+    </SiteShell>
+  );
+}
