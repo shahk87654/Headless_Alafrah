@@ -1,0 +1,2 @@
+import { NextResponse } from "next/server";
+export function GET(){const xml=`<?xml version="1.0"?><rss xmlns:g="http://base.google.com/ns/1.0" version="2.0"><channel><title>Al Afrah Technical</title><link>${process.env.NEXT_PUBLIC_SITE_URL??"https://alafrahtechnical.com"}</link><description>Premium marble furniture and technical solutions</description></channel></rss>`;return new NextResponse(xml,{headers:{"Content-Type":"application/xml","Cache-Control":"public, s-maxage=3600"}});}

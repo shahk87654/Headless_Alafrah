@@ -1,0 +1,1 @@
+import { SiteShell } from "../../components/SiteShell";export default function Lookbook(){return <SiteShell><section className="section"><p className="eyebrow">Spaces</p><h1 style={{fontFamily:"Georgia,serif",fontSize:"58px",fontWeight:400}}>Lookbook</h1><div style={{height:"520px",background:"linear-gradient(135deg,#2d302d,#d8d2c5)",marginTop:"30px"}} /></section></SiteShell>}
