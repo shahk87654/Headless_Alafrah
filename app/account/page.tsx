@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { ArrowRight, PackageCheck, UserRound } from "lucide-react";
+import { ArrowRight, Heart, PackageCheck, ReceiptText, UserRound } from "lucide-react";
 import { SiteShell } from "../../components/SiteShell";
 
 export default function Account() {
@@ -21,12 +21,15 @@ export default function Account() {
     <SiteShell>
       <section className="account-page">
         <div className="account-panel account-intro">
-          <p className="eyebrow">Al Afrah clients</p>
-          <h1>Your pieces,<br />all in one place.</h1>
-          <p>Sign in for a considered view of your orders, quotations, delivery details, and saved preferences.</p>
-          <div className="account-mark">
-            <span>Al Afrah</span>
-            <small>Technical</small>
+          <div className="account-intro-copy">
+            <p className="eyebrow">Al Afrah clients</p>
+            <h1>Everything for<br />your home,<br /><em>in one place.</em></h1>
+            <p>View orders, delivery updates, saved pieces, and workshop quotations from your personal account.</p>
+          </div>
+          <div className="account-benefits" aria-label="Account benefits">
+            <div><PackageCheck size={20} /><span><strong>Orders</strong><small>Track every purchase</small></span></div>
+            <div><ReceiptText size={20} /><span><strong>Quotations</strong><small>Review custom estimates</small></span></div>
+            <div><Heart size={20} /><span><strong>Saved pieces</strong><small>Keep your favourites</small></span></div>
           </div>
         </div>
 
