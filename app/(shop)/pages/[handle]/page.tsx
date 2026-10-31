@@ -1,3 +1,5 @@
+import { ContactForm } from "../../../../components/ContactForm";
+
 export default async function ContentPage({ params }: { params: Promise<{ handle: string }> }) {
   const { handle } = await params;
   const title = handle
@@ -6,27 +8,38 @@ export default async function ContentPage({ params }: { params: Promise<{ handle
     .join(" ");
 
   return (
-    <section className="section rack">
-      <h1>{title}</h1>
+    <section className="content-page">
+      <header className="content-page-heading">
+        <p className="eyebrow">Al Afrah Technical</p>
+        <h1>{title}</h1>
+      </header>
       {handle === "contact" ? (
-        <>
-          <p>Workshop and store in Dubai. Use the form or WhatsApp for sizes, stones and lead times.</p>
-          <form>
-            <label>
-              Name
-              <input aria-label="Name" name="name" required />
-            </label>
-            <label>
-              Email
-              <input aria-label="Email" name="email" type="email" required />
-            </label>
-            <label>
-              Message
-              <textarea aria-label="Message" name="message" rows={6} required />
-            </label>
-            <button type="submit">Send</button>
-          </form>
-        </>
+        <div className="contact-layout">
+          <aside className="contact-details">
+            <div className="contact-details-intro">
+              <span>01 / New project</span>
+              <p>Planning a bespoke piece?<br /><em>Start here.</em></p>
+            </div>
+            <div>
+              <span>Visit</span>
+              <p>Al Afrah Technical<br />Dubai, United Arab Emirates</p>
+            </div>
+            <div>
+              <span>Contact</span>
+              <a href="mailto:info@alafrahtechnical.com">info@alafrahtechnical.com</a>
+              <a href="https://wa.me/971000000000" target="_blank" rel="noreferrer">WhatsApp the workshop</a>
+            </div>
+            <div>
+              <span>Typical response</span>
+              <p>Within one business day</p>
+            </div>
+          </aside>
+          <div className="contact-panel">
+            <p className="eyebrow">Project enquiry</p>
+            <h2>Tell us what you are creating.</h2>
+            <ContactForm />
+          </div>
+        </div>
       ) : (
         <>
           <p>Full copy for this page is loaded from Shopify when the Storefront API is connected.</p>

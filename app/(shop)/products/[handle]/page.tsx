@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getProduct } from "../../../../lib/catalog";
+import { getProduct, getProducts } from "../../../../lib/catalog";
 import { ProductPurchase } from "../../../../components/ProductPurchase";
 
 export const revalidate = 300;
@@ -18,5 +18,6 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
     );
   }
 
-  return <ProductPurchase product={product} />;
+  const related = (await getProducts(12)).filter((item) => item.handle !== handle).slice(0, 4);
+  return <ProductPurchase product={product} related={related} />;
 }

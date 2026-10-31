@@ -6,9 +6,15 @@ export default async function Article({ params }: { params: Promise<{ handle: st
     .join(" ");
 
   return (
-    <article className="section rack article-body">
-      <h1>{title}</h1>
-      <p>
+    <article className="journal-article">
+      <header className="journal-article-heading">
+        <p className="eyebrow">Al Afrah journal</p>
+        <h1>{title}</h1>
+        <p className="journal-article-deck">Practical guidance from the Al Afrah workshop in Dubai.</p>
+      </header>
+      <div className="journal-article-image" aria-hidden="true"><span /><span /></div>
+      <div className="journal-article-body">
+      <p className="journal-lede">
         Start with how the table will be used, the light in the room, and whether you want a honed or polished finish.
         Stone choice is a practical decision: porosity, veining, thickness and how the slab is bookmatched.
       </p>
@@ -23,6 +29,7 @@ export default async function Article({ params }: { params: Promise<{ handle: st
         Measure doorways, lifts and the floor area before you lock length and width. The workshop can cut to your
         dimensions; send the room photos with the quote request.
       </p>
+      </div>
     </article>
   );
 }
