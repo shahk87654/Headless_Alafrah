@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { ChevronDown, Minus, Plus, ShieldCheck, Truck, Ruler, MessageCircle } from "lucide-react";
+import { ChevronDown, Heart, Minus, Plus, ShieldCheck, Truck, Ruler, MessageCircle, Maximize2, Layers3, PencilRuler } from "lucide-react";
 import type { ShopifyProduct } from "../lib/catalog";
 import { hexForMaterial, stoneByName } from "../lib/stones";
 import { ProductCard } from "./product/ProductCard";
@@ -16,6 +16,8 @@ export function ProductPurchase({ product, related = [] }: { product: ShopifyPro
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   const [activeImage, setActiveImage] = useState(0);
+  const [zoomOpen, setZoomOpen] = useState(false);
+  const [saved, setSaved] = useState(false);
   const images = product.images?.nodes?.length ? product.images.nodes : product.featuredImage ? [product.featuredImage] : [];
   const selectedVariant = variants.find((variant) => variant.id === variantId) ?? initialVariant;
   const materialOption = selectedVariant?.selectedOptions.find((option) => option.name.toLowerCase().includes("material"));
@@ -72,7 +74,7 @@ export function ProductPurchase({ product, related = [] }: { product: ShopifyPro
       if (action === "buy") {
         window.location.assign(data.checkoutUrl);
       } else {
-        setMessage("Added to cart");
+        window.location.assign("/cart");
       }
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "The cart could not be updated. Try again.");
@@ -119,14 +121,19 @@ export function ProductPurchase({ product, related = [] }: { product: ShopifyPro
           </div>
         )}
         {images[activeImage] ? (
-          <Image
-            src={images[activeImage].url}
-            alt={images[activeImage].altText ?? product.title}
-            width={images[activeImage].width ?? 1200}
-            height={images[activeImage].height ?? 1500}
-            sizes="(max-width:760px) 100vw, 58vw"
-            priority
-          />
+          <div className="product-main-image">
+            <Image
+              src={images[activeImage].url}
+              alt={images[activeImage].altText ?? product.title}
+              width={images[activeImage].width ?? 1200}
+              height={images[activeImage].height ?? 1500}
+              sizes="(max-width:760px) 100vw, 58vw"
+              priority
+            />
+            <button className="product-zoom" type="button" aria-label="Enlarge product image" onClick={() => setZoomOpen(true)}>
+              <Maximize2 size={17} />
+            </button>
+          </div>
         ) : (
           <p>No photograph for this product yet.</p>
         )}
@@ -138,6 +145,15 @@ export function ProductPurchase({ product, related = [] }: { product: ShopifyPro
         </div>
         <div className="product-title-row">
           <h1>{product.title}</h1>
+          <button
+            className={`product-heart${saved ? " is-saved" : ""}`}
+            type="button"
+            aria-label={saved ? "Remove from saved pieces" : "Save this piece"}
+            aria-pressed={saved}
+            onClick={() => setSaved((value) => !value)}
+          >
+            <Heart size={18} fill={saved ? "currentColor" : "none"} />
+          </button>
         </div>
         <p className="product-price">
           {price}
@@ -254,6 +270,45 @@ export function ProductPurchase({ product, related = [] }: { product: ShopifyPro
         <div><Truck size={22} /><span><strong>Handled with care</strong><small>Delivery and placement support</small></span></div>
         <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "971500000000"}`} target="_blank" rel="noreferrer"><MessageCircle size={22} /><span><strong>Speak to a specialist</strong><small>Advice from the workshop</small></span></a>
       </div>
+      <section className="product-material-story rack">
+        <div className="span-5 product-story-image">
+          {images[images.length > 1 ? 1 : 0] ? (
+            <Image
+              src={images[images.length > 1 ? 1 : 0].url}
+              alt={images[images.length > 1 ? 1 : 0].altText ?? `${product.title} material detail`}
+              width={images[images.length > 1 ? 1 : 0].width ?? 900}
+              height={images[images.length > 1 ? 1 : 0].height ?? 1100}
+              sizes="(max-width:899px) 100vw, 42vw"
+            />
+          ) : (
+            <div className="product-story-placeholder" style={{ backgroundColor: hexForMaterial(materialName) }} />
+          )}
+        </div>
+        <div className="span-7 product-story-copy">
+          <p className="eyebrow">Material character</p>
+          <h2>Natural stone, individually finished</h2>
+          <p>
+            Every slab carries its own movement, tone, and veining. Your selected {materialName !== "Honed" ? materialName : "stone"} piece
+            is matched and finished by the workshop to bring that character into your interior.
+          </p>
+          <div className="material-points">
+            <div><Layers3 size={20} /><span><strong>One-of-a-kind surface</strong><small>Natural variation is part of the beauty</small></span></div>
+            <div><ShieldCheck size={20} /><span><strong>Workshop inspected</strong><small>Checked before it leaves our Dubai studio</small></span></div>
+            <div><Ruler size={20} /><span><strong>Made to fit</strong><small>Dimensions confirmed with your project</small></span></div>
+          </div>
+        </div>
+      </section>
+      <section className="product-craft">
+        <div className="product-craft-heading">
+          <p className="eyebrow">From workshop to home</p>
+          <h2>Crafted with care in three considered steps</h2>
+        </div>
+        <div className="product-craft-grid">
+          <article><span>01</span><PencilRuler size={22} /><h3>Stone selection</h3><p>We review the selected material for tone, movement, and the intended finish.</p></article>
+          <article><span>02</span><Layers3 size={22} /><h3>Precision finishing</h3><p>Each surface and edge is finished and checked by experienced hands.</p></article>
+          <article><span>03</span><Truck size={22} /><h3>Handled for delivery</h3><p>The piece is prepared, protected, and coordinated for your Dubai location.</p></article>
+        </div>
+      </section>
       <section className="product-details rack">
         <div className="span-7 product-copy">
           <p className="eyebrow">Product details</p>
@@ -309,6 +364,27 @@ export function ProductPurchase({ product, related = [] }: { product: ShopifyPro
             {related.map((item) => <ProductCard key={item.id} product={item} />)}
           </div>
         </section>
+      )}
+      <section className="product-size-cta">
+        <div>
+          <p className="eyebrow">A precise fit matters</p>
+          <h2>Need another size or stone?</h2>
+        </div>
+        <Link className="btn btn-outline" href={`/custom-table?product=${encodeURIComponent(product.handle)}`}>
+          Design a made-to-order piece
+        </Link>
+      </section>
+      {zoomOpen && images[activeImage] && (
+        <div className="product-lightbox" role="dialog" aria-modal="true" aria-label="Enlarged product image" onClick={() => setZoomOpen(false)}>
+          <button type="button" aria-label="Close enlarged image" onClick={() => setZoomOpen(false)}>Close</button>
+          <Image
+            src={images[activeImage].url}
+            alt={images[activeImage].altText ?? product.title}
+            width={images[activeImage].width ?? 1600}
+            height={images[activeImage].height ?? 1800}
+            sizes="90vw"
+          />
+        </div>
       )}
     </article>
   );
