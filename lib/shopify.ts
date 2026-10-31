@@ -23,7 +23,7 @@ export async function shopifyFetch<T>(query: string, variables: Record<string, u
       "X-Shopify-Storefront-Access-Token": env.SHOPIFY_STOREFRONT_PUBLIC_TOKEN!,
     },
     body: JSON.stringify({ query, variables }),
-    next: { revalidate: 300, tags: ["shopify"] },
+    cache: "no-store",
   });
   if (!response.ok) throw new Error(`Shopify request failed: ${response.status}`);
   const json = await response.json();

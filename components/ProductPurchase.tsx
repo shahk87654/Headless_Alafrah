@@ -234,7 +234,11 @@ export function ProductPurchase({ product, related = [] }: { product: ShopifyPro
             <Minus size={16} />
           </button>
           <strong>{quantity}</strong>
-          <button type="button" aria-label="Increase quantity" onClick={() => setQuantity((value) => value + 1)}>
+          <button
+            type="button"
+            aria-label="Increase quantity"
+            onClick={() => setQuantity((value) => value + 1)}
+          >
             <Plus size={16} />
           </button>
           </div>

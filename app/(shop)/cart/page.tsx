@@ -8,6 +8,10 @@ import { ArrowLeft, ArrowRight, LockKeyhole, Minus, Plus, ShoppingBag, Trash2 } 
 type CartLine = {
   id: string;
   quantity: number;
+  cost?: {
+    amountPerQuantity: { amount: string; currencyCode: string };
+    totalAmount: { amount: string; currencyCode: string };
+  };
   merchandise: {
     title: string;
     product: { title: string; handle: string; featuredImage?: { url: string; altText?: string | null } | null };
@@ -18,6 +22,10 @@ type CartLine = {
 type CartState = {
   checkoutUrl: string;
   totalQuantity: number;
+  cost?: {
+    subtotalAmount: { amount: string; currencyCode: string };
+    totalAmount: { amount: string; currencyCode: string };
+  };
   lines: CartLine[];
 };
 
@@ -38,7 +46,13 @@ export default function Cart() {
       const response = await fetch(`/api/cart?id=${encodeURIComponent(saved.id)}`);
       const data = await response.json();
       if (!response.ok || data.error) throw new Error(data.error ?? "Your cart could not be loaded. Refresh the page or try again.");
-      setCart(data.cart);
+      if (!data.cart) {
+        localStorage.removeItem("alafrah-cart");
+        window.dispatchEvent(new Event("alafrah-cart-updated"));
+        setCart(null);
+      } else {
+        setCart(data.cart);
+      }
       setError("");
     } catch (loadError) {
       setError(loadError instanceof Error ? loadError.message : "Your cart could not be loaded. Refresh the page or try again.");
@@ -59,6 +73,38 @@ export default function Cart() {
     if (!saved?.id) return;
     setBusyLineId(lineId);
     setError("");
+    setCart((current) => {
+      if (!current) return current;
+      const lines = quantity < 1
+        ? current.lines.filter((line) => line.id !== lineId)
+        : current.lines.map((line) => {
+            if (line.id !== lineId) return line;
+            const unitAmount = line.cost?.amountPerQuantity.amount ?? line.merchandise.price.amount;
+            const currencyCode = line.cost?.amountPerQuantity.currencyCode ?? line.merchandise.price.currencyCode;
+            return {
+              ...line,
+              quantity,
+              cost: {
+                amountPerQuantity: { amount: unitAmount, currencyCode },
+                totalAmount: { amount: String(Number(unitAmount) * quantity), currencyCode },
+              },
+            };
+          });
+      const subtotalAmount = lines.reduce((sum, line) => {
+        const amount = line.cost?.totalAmount.amount ?? String(Number(line.merchandise.price.amount) * line.quantity);
+        return sum + Number(amount);
+      }, 0);
+      const currencyCode = current.cost?.subtotalAmount.currencyCode ?? lines[0]?.cost?.totalAmount.currencyCode ?? lines[0]?.merchandise.price.currencyCode ?? "AED";
+      return {
+        ...current,
+        lines,
+        totalQuantity: lines.reduce((sum, line) => sum + line.quantity, 0),
+        cost: {
+          subtotalAmount: { amount: String(subtotalAmount), currencyCode },
+          totalAmount: { amount: String(subtotalAmount), currencyCode },
+        },
+      };
+    });
     try {
       const response = await fetch("/api/cart", {
         method: "POST",
@@ -72,9 +118,19 @@ export default function Cart() {
         JSON.stringify({ id: data.cartId, checkoutUrl: data.checkoutUrl, totalQuantity: data.totalQuantity }),
       );
       window.dispatchEvent(new Event("alafrah-cart-updated"));
+      if (data.lines && data.cost) {
+        setCart((current) => current ? {
+          ...current,
+          checkoutUrl: data.checkoutUrl,
+          totalQuantity: data.totalQuantity,
+          cost: data.cost,
+          lines: data.lines,
+        } : current);
+      }
       await loadCart();
     } catch (updateError) {
       setError(updateError instanceof Error ? updateError.message : "This item could not be updated.");
+      await loadCart();
     } finally {
       setBusyLineId("");
     }
@@ -116,16 +172,21 @@ export default function Cart() {
     );
   }
 
-  const currency = cart.lines[0]?.merchandise.price.currencyCode ?? "AED";
-  const subtotal = cart.lines.reduce(
-    (sum, line) => sum + Number(line.merchandise.price.amount) * line.quantity,
-    0,
-  );
+  const currency = cart.cost?.subtotalAmount.currencyCode ?? cart.lines[0]?.cost?.totalAmount.currencyCode ?? cart.lines[0]?.merchandise.price.currencyCode ?? "AED";
+  const subtotal = cart.cost?.subtotalAmount
+    ? Number(cart.cost.subtotalAmount.amount)
+    : cart.lines.reduce(
+        (sum, line) => sum + Number(line.merchandise.price.amount) * line.quantity,
+        0,
+      );
+  const vat = subtotal * 0.05;
+  const total = subtotal + vat;
   const formatPrice = (amount: number) =>
     new Intl.NumberFormat("en-AE", {
       style: "currency",
       currency,
-      minimumFractionDigits: 0,
+      minimumFractionDigits: Number.isInteger(amount) ? 0 : 2,
+      maximumFractionDigits: 2,
     }).format(amount);
 
   return (
@@ -158,8 +219,11 @@ export default function Cart() {
                   <div>
                     <Link href={`/products/${line.merchandise.product.handle}`}>{line.merchandise.product.title}</Link>
                     {line.merchandise.title !== "Default Title" && <p>{line.merchandise.title}</p>}
+                    <p className="cart-line-unit-price">
+                      {formatPrice(Number(line.cost?.amountPerQuantity.amount ?? line.merchandise.price.amount))} each
+                    </p>
                   </div>
-                  <strong>{formatPrice(Number(line.merchandise.price.amount) * line.quantity)}</strong>
+                  <strong>{formatPrice(Number(line.cost?.totalAmount.amount ?? (Number(line.merchandise.price.amount) * line.quantity)))}</strong>
                 </div>
 
                 <div className="cart-line-actions">
@@ -190,7 +254,11 @@ export default function Cart() {
 
           <div className="cart-summary-details">
             <p><span>Delivery</span><strong>Calculated at checkout</strong></p>
-            <p><span>VAT</span><strong>Included</strong></p>
+            <p><span>VAT (5%)</span><strong>{formatPrice(vat)}</strong></p>
+          </div>
+          <div className="cart-summary-total cart-summary-grand-total">
+            <span>Total</span>
+            <strong>{formatPrice(total)}</strong>
           </div>
 
           <a className="cart-primary-action cart-checkout" href={cart.checkoutUrl}>

@@ -160,6 +160,11 @@
   font-size: 13px;
 }
 
+.cart-line-title .cart-line-unit-price {
+  margin-top: 5px;
+  font-size: 12px;
+}
+
 .cart-line-title strong {
   flex: 0 0 auto;
   font-size: 15px;
@@ -266,6 +271,13 @@
 .cart-summary-details strong {
   color: var(--marquina);
   font-weight: 600;
+}
+
+.cart-summary-grand-total {
+  margin-top: 0;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  border-bottom: 0;
 }
 
 .cart-primary-action {
