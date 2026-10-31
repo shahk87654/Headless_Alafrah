@@ -17,7 +17,6 @@ const NAV = [
 export function SiteShell({ children }: { children: ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [announcement, setAnnouncement] = useState(true);
   const [cartCount, setCartCount] = useState(0);
   const [cookieChoice, setCookieChoice] = useState(false);
 
@@ -55,14 +54,6 @@ export function SiteShell({ children }: { children: ReactNode }) {
 
   return (
     <>
-      {announcement && (
-        <div className="announce">
-          <span>Free delivery on orders over AED 2,000 within Dubai</span>
-          <button type="button" aria-label="Dismiss announcement" onClick={() => setAnnouncement(false)}>
-            <X size={14} />
-          </button>
-        </div>
-      )}
       <header className="site-head">
         <button className="menu-btn" type="button" aria-label="Open menu" onClick={() => setMenuOpen(true)}>
           <Menu size={20} />
@@ -148,7 +139,10 @@ export function SiteShell({ children }: { children: ReactNode }) {
 
       <footer className="site-foot">
         <div className="foot-bottom">
-          <Link className="foot-brand" href="/">Al Afrah Technical</Link>
+          <Link className="foot-brand" href="/" aria-label="Al Afrah Technical home">
+            <span>Al Afrah</span>
+            <small>Technical</small>
+          </Link>
           <nav className="foot-links" aria-label="Footer">
             <Link href="/collections/coffee-tables">Tables</Link>
             <Link href="/collections/marble-accessories">Accessories</Link>
@@ -156,18 +150,12 @@ export function SiteShell({ children }: { children: ReactNode }) {
             <Link href="/pages/contact">Contact</Link>
             <Link href="/faqs">FAQs</Link>
           </nav>
-          <p className="foot-meta">Dubai, UAE · © 2026</p>
+          <div className="foot-meta">
+            <span>Dubai, UAE · © 2026</span>
+            <a href="mailto:info@alafrahtechnical.com">Email us</a>
+          </div>
         </div>
       </footer>
-      <a
-        className="whatsapp"
-        href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "971500000000"}?text=${encodeURIComponent("Hello Al Afrah Technical, I would like to ask about a piece.")}`}
-        target="_blank"
-        rel="noreferrer"
-        aria-label="Chat on WhatsApp"
-      >
-        WhatsApp
-      </a>
       {!cookieChoice && (
         <aside className="cookie" aria-label="Cookie choices">
           <p>We use cookies to keep the cart and measure site use.</p>

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ChevronDown, Minus, Plus, ShieldCheck, Truck, Ruler, MessageCircle } from "lucide-react";
 import type { ShopifyProduct } from "../lib/catalog";
 import { hexForMaterial, stoneByName } from "../lib/stones";
@@ -29,18 +29,12 @@ export function ProductPurchase({ product, related = [] }: { product: ShopifyPro
       ),
     ).keys(),
   ];
-  const textureImage = selectedVariant?.image?.url ?? images[0]?.url;
   const quantityAvailable = selectedVariant?.quantityAvailable;
   const lowStock = typeof quantityAvailable === "number" && quantityAvailable > 0 && quantityAvailable <= 5;
   const variantOptions = selectedVariant?.selectedOptions ?? [];
   const salePercent = selectedVariant?.compareAtPrice && Number(selectedVariant.compareAtPrice.amount) > Number(selectedVariant.price.amount)
     ? Math.round((1 - Number(selectedVariant.price.amount) / Number(selectedVariant.compareAtPrice.amount)) * 100)
     : 0;
-
-  useEffect(() => {
-    document.body.classList.add("has-sticky-atc");
-    return () => document.body.classList.remove("has-sticky-atc");
-  }, []);
 
   function selectVariant(variantIdValue: string) {
     setVariantId(variantIdValue);
@@ -254,24 +248,11 @@ export function ProductPurchase({ product, related = [] }: { product: ShopifyPro
         </div>
       </div>
       </div>
-      <div className="sticky-atc" aria-label="Add to cart">
-        <strong className="tabular">{price}</strong>
-        <button className="btn btn-primary" type="button" disabled={busy || !product.availableForSale} onClick={() => submit("add")}>
-          Add to cart
-        </button>
-      </div>
       <div className="product-benefits">
         <div><ShieldCheck size={22} /><span><strong>Premium stone</strong><small>Selected for lasting beauty</small></span></div>
         <div><Ruler size={22} /><span><strong>Custom sizing</strong><small>Made for your space</small></span></div>
         <div><Truck size={22} /><span><strong>Handled with care</strong><small>Delivery and placement support</small></span></div>
         <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "971500000000"}`} target="_blank" rel="noreferrer"><MessageCircle size={22} /><span><strong>Speak to a specialist</strong><small>Advice from the workshop</small></span></a>
-      </div>
-      <div className="texture-strip">
-        {textureImage ? (
-          <Image src={textureImage} alt={`${materialName} stone texture for ${product.title}`} fill sizes="100vw" />
-        ) : (
-          <span className="flat">{materialName}</span>
-        )}
       </div>
       <section className="product-details rack">
         <div className="span-7 product-copy">

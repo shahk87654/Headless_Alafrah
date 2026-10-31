@@ -15,12 +15,15 @@ export default function InteractiveHome() {
   const material = materials[selected];
 
   return (
-    <section className="section rack" aria-label="Materials">
-      <div className="span-12 home-material-intro">
-        <h2>Start with the stone</h2>
-        <p>Compare stones kept in the yard. The selected slab sets the look of the finished piece.</p>
+    <section className="home-materials section" aria-label="Materials">
+      <div className="home-section-heading rack">
+        <div className="span-8">
+          <p className="eyebrow">Material library</p>
+          <h2>Begin with stone.</h2>
+        </div>
+        <p className="span-4">Four distinct characters, selected for the way light, grain and proportion change a room.</p>
       </div>
-      <div className="span-12 rail" role="tablist" aria-label="Marble materials">
+      <div className="home-material-grid rack" role="tablist" aria-label="Marble materials">
         {(Object.keys(materials) as Array<keyof typeof materials>).map((name) => (
           <button
             key={name}
@@ -28,15 +31,16 @@ export default function InteractiveHome() {
             role="tab"
             aria-selected={selected === name}
             onClick={() => setSelected(name)}
+            className={`home-material-card material-${name.toLowerCase()} ${selected === name ? "is-active" : ""}`}
           >
-            {name}
+            <span><small>{String(Object.keys(materials).indexOf(name) + 1).padStart(2, "0")}</small>{name}<b>↗</b></span>
           </button>
         ))}
       </div>
-      <div role="tabpanel">
-        <p>{material.label}</p>
-        <p>{material.note}</p>
-        <Link href={`/collections/${material.handle}`}>Shop {material.label}</Link>
+      <div className="home-material-detail rack" role="tabpanel">
+        <p className="span-3">{material.label}</p>
+        <p className="span-6">{material.note}</p>
+        <Link className="span-3" href={`/collections/${material.handle}`}>Explore the collection <span aria-hidden="true">↗</span></Link>
       </div>
     </section>
   );
