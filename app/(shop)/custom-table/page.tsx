@@ -123,13 +123,13 @@ export default function CustomTable({ initialProduct }: { initialProduct?: strin
             {step === 1 && (
               <div className="dimension-controls">
                 {[
-                  ["Length", length, setLength, 80, 300],
-                  ["Width", width, setWidth, 50, 150],
-                  ["Height", height, setHeight, 70, 110],
-                ].map(([label, value, setter, min, max]) => (
+                  { label: "Length", value: length, setter: setLength, min: 80, max: 300 },
+                  { label: "Width", value: width, setter: setWidth, min: 50, max: 150 },
+                  { label: "Height", value: height, setter: setHeight, min: 70, max: 110 },
+                ].map(({ label, value, setter, min, max }) => (
                   <label className="dimension-control" key={String(label)}>
                     <span><strong>{label}</strong><output>{value} cm</output></span>
-                    <input type="range" min={Number(min)} max={Number(max)} value={Number(value)} onChange={(event) => (setter as (value: number) => void)(Number(event.target.value))} />
+                    <input type="range" min={min} max={max} value={value} onChange={(event) => setter(Number(event.target.value))} />
                     <small>{min}–{max} cm</small>
                   </label>
                 ))}
