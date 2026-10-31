@@ -6,7 +6,7 @@ export default async function Article({ params }: { params: Promise<{ handle: st
     .join(" ");
 
   return (
-    <article>
+    <article className="section rack article-body">
       <h1>{title}</h1>
       <p>
         Start with how the table will be used, the light in the room, and whether you want a honed or polished finish.

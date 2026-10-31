@@ -15,10 +15,12 @@ export default function InteractiveHome() {
   const material = materials[selected];
 
   return (
-    <section aria-label="Materials">
-      <h2>Start with the stone</h2>
-      <p>Compare four stones we keep in the yard. The selected slab sets the look of the finished piece.</p>
-      <div role="tablist" aria-label="Marble materials">
+    <section className="section rack" aria-label="Materials">
+      <div className="span-12 home-material-intro">
+        <h2>Start with the stone</h2>
+        <p>Compare stones kept in the yard. The selected slab sets the look of the finished piece.</p>
+      </div>
+      <div className="span-12 rail" role="tablist" aria-label="Marble materials">
         {(Object.keys(materials) as Array<keyof typeof materials>).map((name) => (
           <button
             key={name}

@@ -6,7 +6,7 @@ export default async function ContentPage({ params }: { params: Promise<{ handle
     .join(" ");
 
   return (
-    <section>
+    <section className="section rack">
       <h1>{title}</h1>
       {handle === "contact" ? (
         <>

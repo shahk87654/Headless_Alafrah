@@ -8,9 +8,9 @@ const posts = [
 
 export default function Magazine() {
   return (
-    <section>
+    <section className="section rack">
       <h1>Magazine</h1>
-      <ul>
+      <ul className="span-12 stack">
         {posts.map((post) => (
           <li key={post.h}>
             <Link href={`/blogs/news/${post.h}`}>

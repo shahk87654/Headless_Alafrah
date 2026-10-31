@@ -13,9 +13,9 @@ export default async function Search({ searchParams }: { searchParams: Promise<{
       : null;
 
   return (
-    <section>
+    <section className="section rack">
       <h1>{q ? `${result.products.length} results for ‘${q}’` : "Search"}</h1>
-      <form action="/search">
+      <form className="span-12 field" action="/search">
         <label className="sr-only" htmlFor="q">
           Search
         </label>
@@ -23,7 +23,7 @@ export default async function Search({ searchParams }: { searchParams: Promise<{
         <button type="submit">Search</button>
       </form>
       {q && result.products.length === 0 && (
-        <div>
+        <div className="span-12 stack">
           <p>No products match that search. Try a stone name, or request a custom piece.</p>
           <Link href="/collections/coffee-tables">Coffee tables</Link>
           <Link href="/collections/dining-tables">Dining tables</Link>
@@ -31,7 +31,7 @@ export default async function Search({ searchParams }: { searchParams: Promise<{
           <Link href="/custom-table">Request a custom piece</Link>
         </div>
       )}
-      <ul>
+      <ul className="span-12 product-grid">
         {result.products.map((product) => (
           <li key={product.id}>
             <Link href={`/products/${product.handle}`}>

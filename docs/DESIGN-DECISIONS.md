@@ -119,3 +119,13 @@ Recorded here as pages ship, so a reviewer can see what was cut rather than adde
 - Tokens live in `app/globals.css` (`@theme` + `:root`). No leftover v1 names.
 - Contrast helper: `lib/contrast.ts`.
 - Fallback stone colours when a metaobject `color_hex` is missing: `lib/stones.ts`.
+
+## Final implementation audit
+
+- Home: bookmatched hero, Travertine trust strip, stone rail, slab mosaic and product cards use the Slab Rack layout.
+- Collection and search: product grids, filters, empty states and pagination are available.
+- Product: stone-aware header tint, variant selection, macro strip, specifications and custom-size request are wired.
+- Cart: loading, empty, unavailable and completed states use the redesigned shell.
+- Custom table: seven-step sequence has a live slab preview, size controls, estimate and confirmation reference.
+- Remaining content such as lookbooks, compare data and accounts are represented as deliberate empty states until Shopify publishes that data.
+- The obsolete palette, type names and design token names are not present outside this documented design record.

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getCollection, formatAED, type ShopifyProduct } from "../../../../lib/catalog";
+import { getCollection, type ShopifyProduct } from "../../../../lib/catalog";
+import { ProductCard } from "../../../../components/product/ProductCard";
 
 export const revalidate = 300;
 
@@ -85,24 +86,42 @@ export default async function CollectionPage({
 
   return (
     <>
-      <section>
-        {collection.image && (
-          <Image
-            src={collection.image.url}
-            alt={collection.image.altText ?? collection.title}
-            width={collection.image.width ?? 1600}
-            height={collection.image.height ?? 1066}
-            priority
-            sizes="(max-width: 900px) 100vw, 58vw"
-          />
-        )}
-        <div>
-          <h1>{collection.title}</h1>
-          {collection.description && <p>{collection.description}</p>}
+      <section className="collection-detail-hero">
+        <div className="rack">
+          <div className="collection-detail-copy">
+            <nav className="collection-breadcrumb" aria-label="Breadcrumb">
+              <Link href="/collections">Collections</Link>
+              <span aria-hidden="true">/</span>
+              <span>{collection.title}</span>
+            </nav>
+            <p className="collection-eyebrow">Curated stone selection</p>
+            <h1>{collection.title}</h1>
+            {collection.description && <p className="collection-detail-description">{collection.description}</p>}
+            <p className="collection-detail-count">{filtered.length} {filtered.length === 1 ? "piece" : "pieces"}</p>
+          </div>
+          <div className="collection-detail-image">
+            {collection.image ? (
+              <Image
+                src={collection.image.url}
+                alt={collection.image.altText ?? collection.title}
+                width={collection.image.width ?? 1600}
+                height={collection.image.height ?? 1066}
+                priority
+                sizes="(max-width: 900px) 100vw, 58vw"
+              />
+            ) : (
+              <span className="collection-detail-fallback" aria-hidden="true" />
+            )}
+          </div>
         </div>
       </section>
-      <section>
+      <section className="rack collection-browser">
+        <aside className="collection-filter-sidebar filters">
         <form action={`/collections/${handle}`} method="get">
+          <p className="collection-filter-heading">Refine</p>
+          {(filters.q || filters.availability || filters.vendor || filters.type || filters.tag || filters.sort) && (
+            <Link className="collection-filter-clear" href={`/collections/${handle}`}>Clear all</Link>
+          )}
           <label>
             Search
             <input name="q" type="search" defaultValue={filters.q ?? ""} placeholder="Search this collection" />
@@ -159,41 +178,31 @@ export default async function CollectionPage({
           </label>
           <button type="submit">Apply</button>
         </form>
-        <p>
-          {filtered.length} {filtered.length === 1 ? "result" : "results"}
-        </p>
-        {(filters.q || filters.availability || filters.vendor || filters.type || filters.tag || filters.sort) && (
-          <Link href={`/collections/${handle}`}>Clear filters</Link>
-        )}
+        </aside>
+        <div className="collection-results">
+        <div className="collection-results-toolbar">
+          <p><strong>{filtered.length}</strong> {filtered.length === 1 ? "piece" : "pieces"} found</p>
+          {(filters.q || filters.availability || filters.vendor || filters.type || filters.tag || filters.sort) && (
+            <Link className="collection-mobile-clear" href={`/collections/${handle}`}>Clear filters</Link>
+          )}
+        </div>
         {displayed.length === 0 ? (
-          <p>
+          <p className="collection-no-results">
             No products match these filters.{" "}
             <Link href={`/collections/${handle}`}>Clear filters</Link> or{" "}
             <Link href="/custom-table">request a custom table</Link>.
           </p>
         ) : (
-          <ul>
+          <ul className="product-grid">
             {displayed.map((product) => (
               <li key={product.id}>
-                <Link href={`/products/${product.handle}`}>
-                  {product.featuredImage ? (
-                    <Image
-                      src={product.featuredImage.url}
-                      alt={product.featuredImage.altText ?? product.title}
-                      width={product.featuredImage.width ?? 800}
-                      height={product.featuredImage.height ?? 1000}
-                      sizes="(max-width:760px) 50vw, 25vw"
-                    />
-                  ) : null}
-                  <h2>{product.title}</h2>
-                  <p>{formatAED(product.priceRange.minVariantPrice.amount)}</p>
-                </Link>
+                <ProductCard product={product} />
               </li>
             ))}
           </ul>
         )}
         {pageCount > 1 && (
-          <nav aria-label="Collection pagination">
+          <nav className="collection-pagination" aria-label="Collection pagination">
             {currentPage > 1 && <Link href={buildUrl({ page: String(currentPage - 1) })}>Previous</Link>}
             {Array.from({ length: pageCount }, (_, index) => index + 1).map((number) => (
               <Link key={number} href={buildUrl({ page: String(number) })} aria-current={number === currentPage ? "page" : undefined}>
@@ -203,6 +212,7 @@ export default async function CollectionPage({
             {currentPage < pageCount && <Link href={buildUrl({ page: String(currentPage + 1) })}>Next</Link>}
           </nav>
         )}
+        </div>
       </section>
     </>
   );

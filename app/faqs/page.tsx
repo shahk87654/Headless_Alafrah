@@ -10,7 +10,7 @@ const faqs = [
 export default function FAQs() {
   return (
     <SiteShell>
-      <section>
+      <section className="section rack">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage" }) }} />
         <h1>Frequently asked questions</h1>
         {faqs.map(([question, answer]) => (

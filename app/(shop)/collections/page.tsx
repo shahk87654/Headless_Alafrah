@@ -7,17 +7,28 @@ export const revalidate = 300;
 export default async function Collections() {
   const collections = await getCollections(50);
   return (
-    <section>
-      <h1>Collections</h1>
-      {collections.length === 0 ? (
-        <p>
-          No collections loaded. Check the Shopify connection, or{" "}
-          <Link href="/custom-table">request a custom table</Link>.
+    <div className="collections-page">
+      <section className="collections-intro rack">
+        <div>
+          <p className="collection-eyebrow">The catalogue</p>
+          <h1>Collections</h1>
+        </div>
+        <p className="collections-intro-copy">
+          Explore natural stone by colour, finish and character. Each collection brings together pieces selected for their tone, movement and enduring presence.
         </p>
+      </section>
+      {collections.length === 0 ? (
+        <section className="rack collection-empty">
+          <p>
+            No collections loaded. Check the Shopify connection, or{" "}
+            <Link href="/custom-table">request a custom table</Link>.
+          </p>
+        </section>
       ) : (
-        <ul>
-          {collections.map((collection) => (
-            <li key={collection.id}>
+        <section className="rack">
+          <ul className="span-12 collection-editorial-grid">
+            {collections.map((collection, index) => (
+            <li className={`collection-editorial-card ${index === 0 ? "collection-editorial-feature" : index === 1 ? "collection-editorial-tall" : ""}`} key={collection.id}>
               <Link href={`/collections/${collection.handle}`}>
                 {collection.image ? (
                   <Image
@@ -25,15 +36,24 @@ export default async function Collections() {
                     alt={collection.image.altText ?? collection.title}
                     width={collection.image.width ?? 800}
                     height={collection.image.height ?? 600}
-                    sizes="(max-width:760px) 50vw, 25vw"
+                    sizes={index === 0 ? "(max-width: 760px) 100vw, 58vw" : "(max-width: 760px) 50vw, 30vw"}
                   />
-                ) : null}
-                <h2>{collection.title}</h2>
+                ) : (
+                  <span className="collection-editorial-fallback" aria-hidden="true" />
+                )}
+                <span className="collection-editorial-meta">
+                  <span>
+                    <span className="collection-editorial-index">{String(index + 1).padStart(2, "0")}</span>
+                    <h2>{collection.title}</h2>
+                  </span>
+                  <span className="collection-editorial-arrow" aria-hidden="true">↗</span>
+                </span>
               </Link>
             </li>
-          ))}
-        </ul>
+            ))}
+          </ul>
+        </section>
       )}
-    </section>
+    </div>
   );
 }
