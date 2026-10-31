@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ArrowLeft, ArrowRight, LockKeyhole, Minus, Plus, ShoppingBag, Trash2, Truck } from "lucide-react";
+import { ArrowLeft, ArrowRight, LockKeyhole, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 
 type CartLine = {
   id: string;
@@ -121,9 +121,6 @@ export default function Cart() {
     (sum, line) => sum + Number(line.merchandise.price.amount) * line.quantity,
     0,
   );
-  const freeDeliveryTarget = 2000;
-  const progress = Math.min(100, (subtotal / freeDeliveryTarget) * 100);
-  const remaining = Math.max(0, freeDeliveryTarget - subtotal);
   const formatPrice = (amount: number) =>
     new Intl.NumberFormat("en-AE", {
       style: "currency",
@@ -189,16 +186,6 @@ export default function Cart() {
           <div className="cart-summary-total">
             <span>Subtotal</span>
             <strong>{formatPrice(subtotal)}</strong>
-          </div>
-
-          <div className="cart-delivery">
-            <div className="cart-delivery-heading">
-              <Truck size={18} />
-              <span>{remaining === 0 ? "Complimentary delivery unlocked" : `${formatPrice(remaining)} away from complimentary delivery`}</span>
-            </div>
-            <div className="cart-progress" aria-label={`${Math.round(progress)}% of complimentary delivery threshold`}>
-              <span style={{ width: `${progress}%` }} />
-            </div>
           </div>
 
           <div className="cart-summary-details">

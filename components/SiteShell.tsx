@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, Search, ShoppingBag, User, X } from "lucide-react";
 
 const NAV = [
@@ -19,6 +20,9 @@ export function SiteShell({ children }: { children: ReactNode }) {
   const [searchOpen, setSearchOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [cookieChoice, setCookieChoice] = useState(false);
+  const [homeAnnouncement, setHomeAnnouncement] = useState(true);
+  const pathname = usePathname();
+  const showHomeAnnouncement = pathname === "/" && homeAnnouncement;
 
   useEffect(() => {
     const close = (event: KeyboardEvent) => {
@@ -54,6 +58,17 @@ export function SiteShell({ children }: { children: ReactNode }) {
 
   return (
     <>
+      {showHomeAnnouncement && (
+        <div className="home-announcement">
+          <Link href="/custom-table">
+            <span>Custom orders</span>
+            <strong>Get up to 50% off</strong>
+          </Link>
+          <button type="button" aria-label="Dismiss announcement" onClick={() => setHomeAnnouncement(false)}>
+            <X size={14} />
+          </button>
+        </div>
+      )}
       <header className="site-head">
         <button className="menu-btn" type="button" aria-label="Open menu" onClick={() => setMenuOpen(true)}>
           <Menu size={20} />

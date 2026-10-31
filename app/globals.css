@@ -249,32 +249,6 @@
   font-weight: 400;
 }
 
-.cart-delivery {
-  padding: 22px 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.cart-delivery-heading {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 12px;
-}
-
-.cart-progress {
-  height: 3px;
-  margin-top: 14px;
-  overflow: hidden;
-  background: var(--line);
-}
-
-.cart-progress span {
-  display: block;
-  height: 100%;
-  background: var(--jungle);
-  transition: width .35s ease;
-}
-
 .cart-summary-details {
   display: grid;
   gap: 8px;
@@ -936,6 +910,53 @@ h3 {
   background: linear-gradient(to top right, transparent calc(50% - 1px), var(--marquina) 50%, transparent calc(50% + 1px));
 }
 
+/* Home campaign announcement */
+.home-announcement {
+  min-height: 44px;
+  position: relative;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 8px 54px;
+  background: var(--marquina);
+  color: var(--calacatta);
+  text-align: center;
+}
+
+.home-announcement a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.home-announcement a span {
+  color: rgb(241 242 239 / .68);
+}
+
+.home-announcement strong {
+  font-size: 12px;
+  letter-spacing: .12em;
+}
+
+.home-announcement button {
+  position: absolute;
+  right: var(--margin);
+  top: 50%;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
 .announce {
   display: flex;
   align-items: center;
@@ -1368,7 +1389,7 @@ h3 {
   display: grid;
   grid-template-columns: 220px 1fr 220px;
   align-items: center;
-  min-height: 68px;
+  min-height: 180px;
   gap: var(--space-4);
 }
 
@@ -1380,6 +1401,10 @@ h3 {
   font-size: 1.35rem;
   color: var(--calacatta);
   text-decoration: none;
+}
+
+.foot-brand span {
+  font-size: 2rem;
 }
 
 .foot-brand small {
@@ -1402,6 +1427,7 @@ h3 {
 
 .foot-links a {
   white-space: nowrap;
+  font-size: var(--text-sm);
 }
 
 .foot-meta {
@@ -1421,14 +1447,29 @@ h3 {
 }
 
 @media (max-width: 700px) {
+  .home-announcement {
+    min-height: 48px;
+    padding-inline: 44px 38px;
+  }
+
+  .home-announcement a {
+    gap: 8px;
+    font-size: 10px;
+    letter-spacing: .05em;
+  }
+
+  .home-announcement strong {
+    font-size: 10px;
+  }
+
   .site-foot {
     margin-top: var(--space-5);
   }
   .foot-bottom {
     grid-template-columns: 1fr;
-    min-height: 64px;
-    gap: 10px;
-    padding: 16px 0;
+    min-height: 220px;
+    gap: 18px;
+    padding: 32px 0;
   }
   .foot-brand { justify-self: start; }
   .foot-links {
