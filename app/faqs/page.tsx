@@ -4,9 +4,10 @@ import { SiteShell } from "../../components/SiteShell";
 const faqs = [
   ["Is the price final before I order?", "Custom pieces are quoted after dimensions, stone selection, edge profile and delivery details are confirmed. Online products display the current checkout price."],
   ["Do you deliver across the UAE?", "Yes. We arrange delivery and installation for Dubai, Abu Dhabi, Sharjah and other Emirates."],
+  ["When will my order be delivered?", "The workshop confirms delivery timing and installation based on your address and selected piece. Contact us if you need help coordinating a delivery."],
   ["Can I request custom dimensions?", "Yes. Use Design a custom table or send room measurements and the stone you want."],
   ["What payment methods are available?", "Shopify checkout supports major cards, Apple Pay and the payment methods enabled on the store."],
-  ["Is VAT included in displayed prices?", "Prices are in AED and include 5% VAT. Shipping is added at checkout."],
+  ["How are VAT and delivery charges shown?", "The cart shows the VAT amount separately. Delivery charges are calculated at checkout."],
 ];
 
 export default function FAQs() {

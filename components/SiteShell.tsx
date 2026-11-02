@@ -153,21 +153,68 @@ export function SiteShell({ children }: { children: ReactNode }) {
       <main>{children}</main>
 
       <footer className="site-foot">
+        <div className="foot-top">
+          <div className="foot-branding">
+            <Link className="foot-brand" href="/" aria-label="Al Afrah Technical home">
+              <span>Al Afrah</span>
+              <small>Technical</small>
+            </Link>
+            <p>Marble furniture and bespoke interiors curated for refined homes in Dubai.</p>
+          </div>
+
+          <div className="foot-cta">
+            <p>Need help finding the right piece?</p>
+            <Link className="btn btn-primary" href="/custom-table">
+              Book a consultation
+            </Link>
+          </div>
+        </div>
+
+        <div className="foot-grid" aria-label="Footer navigation">
+          <div>
+            <p className="foot-title">Shop</p>
+            <nav className="foot-links">
+              <Link href="/collections/coffee-tables">Coffee tables</Link>
+              <Link href="/collections/dining-tables">Dining tables</Link>
+              <Link href="/collections/marble-accessories">Accessories</Link>
+            </nav>
+          </div>
+
+          <div>
+            <p className="foot-title">Collections</p>
+            <nav className="foot-links">
+              <Link href="/collections/travertine-marble">Travertine</Link>
+              <Link href="/collections">Home decor</Link>
+              <Link href="/custom-table">Custom pieces</Link>
+            </nav>
+          </div>
+
+          <div>
+            <p className="foot-title">Support</p>
+            <nav className="foot-links">
+              <Link href="/pages/contact">Contact</Link>
+              <Link href="/faqs">FAQs</Link>
+              <Link href="/blogs/news">Journal</Link>
+            </nav>
+          </div>
+
+          <div>
+            <p className="foot-title">Visit</p>
+            <div className="foot-contact">
+              <span>Dubai, UAE</span>
+              <a href="mailto:info@alafrahtechnical.com">info@alafrahtechnical.com</a>
+              <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "971500000000"}`} target="_blank" rel="noreferrer">
+                WhatsApp us
+              </a>
+            </div>
+          </div>
+        </div>
+
         <div className="foot-bottom">
-          <Link className="foot-brand" href="/" aria-label="Al Afrah Technical home">
-            <span>Al Afrah</span>
-            <small>Technical</small>
-          </Link>
-          <nav className="foot-links" aria-label="Footer">
-            <Link href="/collections/coffee-tables">Tables</Link>
-            <Link href="/collections/marble-accessories">Accessories</Link>
-            <Link href="/custom-table">Custom</Link>
-            <Link href="/pages/contact">Contact</Link>
-            <Link href="/faqs">FAQs</Link>
-          </nav>
+          <span>© 2026 Al Afrah Technical</span>
           <div className="foot-meta">
-            <span>Dubai, UAE · © 2026</span>
             <a href="mailto:info@alafrahtechnical.com">Email us</a>
+            <a href="/pages/contact">Book a showroom visit</a>
           </div>
         </div>
       </footer>

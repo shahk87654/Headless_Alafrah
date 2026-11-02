@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ArrowLeft, ArrowRight, LockKeyhole, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, LockKeyhole, Minus, Plus, ShoppingBag, Trash2, Truck } from "lucide-react";
 
 type CartLine = {
   id: string;
@@ -253,7 +253,7 @@ export default function Cart() {
           </div>
 
           <div className="cart-summary-details">
-            <p><span>Delivery</span><strong>Calculated at checkout</strong></p>
+            <p><span>Delivery fee</span><strong>At checkout</strong></p>
             <p><span>VAT (5%)</span><strong>{formatPrice(vat)}</strong></p>
           </div>
           <div className="cart-summary-total cart-summary-grand-total">
@@ -265,6 +265,14 @@ export default function Cart() {
             Secure checkout <ArrowRight size={18} />
           </a>
           <p className="cart-secure"><LockKeyhole size={14} /> Encrypted and secure payment</p>
+          <div className="cart-delivery-note">
+            <Truck size={19} aria-hidden="true" />
+            <div>
+              <strong>Delivery, arranged for your piece</strong>
+              <p>Our workshop confirms timing and installation for your address and selected piece. Delivery fees are shown at checkout.</p>
+              <Link href="/faqs#faq-list">Delivery & payment policy <ArrowRight size={14} /></Link>
+            </div>
+          </div>
           <p className="cart-assistance">Need help choosing or arranging delivery?<br /><Link href="/pages/contact">Speak with our workshop</Link></p>
         </aside>
       </div>

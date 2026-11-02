@@ -1,8 +1,10 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import Link from "next/link";
 import { ArrowRight, Heart, PackageCheck, ReceiptText, UserRound } from "lucide-react";
 import { SiteShell } from "../../components/SiteShell";
+import { OrderTrackingForm } from "../../components/OrderTrackingForm";
 
 export default function Account() {
   const [mode, setMode] = useState<"signin" | "signup" | "tracking">("signin");
@@ -10,11 +12,7 @@ export default function Account() {
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setMessage(
-      mode === "tracking"
-        ? "Your order status will be confirmed by our workshop team. Please allow a few minutes for the latest update."
-        : "Online customer accounts are being enabled. Contact the workshop for access to your existing orders.",
-    );
+    setMessage("Online customer accounts are being enabled. Contact the workshop for access to your existing orders.");
   }
 
   return (
@@ -46,19 +44,14 @@ export default function Account() {
             </button>
           </div>
 
-          <form className="account-form" onSubmit={submit}>
-            {mode === "tracking" ? (
-              <>
-                <div className="account-form-heading">
-                  <PackageCheck size={24} />
-                  <div><p className="eyebrow">Delivery status</p><h2>Track an order</h2></div>
-                </div>
-                <label>Order number<input name="order" type="text" placeholder="e.g. AA-10482" required /></label>
-                <label>Email address<input name="email" type="email" placeholder="you@example.com" required /></label>
-                <button className="account-submit" type="submit">Find my order <ArrowRight size={17} /></button>
-              </>
-            ) : (
-              <>
+          {mode === "tracking" ? (
+            <>
+              <OrderTrackingForm />
+              <button className="account-text-action" type="button" onClick={() => setMode("signin")}>Back to sign in</button>
+              <Link className="account-text-action" href="/track-order">Open full tracking page</Link>
+            </>
+          ) : (
+            <form className="account-form" onSubmit={submit}>
                 <div className="account-form-heading">
                   <UserRound size={24} />
                   <div><p className="eyebrow">{mode === "signin" ? "Welcome back" : "Join Al Afrah"}</p><h2>{mode === "signin" ? "Sign in" : "Create account"}</h2></div>
@@ -68,9 +61,8 @@ export default function Account() {
                 <label>Password<input name="password" type="password" placeholder="At least 8 characters" minLength={8} required /></label>
                 <button className="account-submit" type="submit">{mode === "signin" ? "Sign in" : "Create account"} <ArrowRight size={17} /></button>
                 <button className="account-text-action" type="button" onClick={() => setMode("tracking")}>I need to track an existing order</button>
-              </>
-            )}
-          </form>
+            </form>
+          )}
           {message && <p className="account-message" role="status">{message}</p>}
         </div>
       </section>
