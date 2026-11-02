@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans_Arabic, Instrument_Sans, Italiana } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const display = Italiana({
@@ -36,6 +37,16 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${display.variable} ${sans.variable} ${arabic.variable}`}>
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-9FPPGWXF21"
+        strategy="beforeInteractive"
+      />
+      <Script id="google-tag-config" strategy="beforeInteractive">
+        {`window.dataLayer = window.dataLayer || [];
+function gtag(){window.dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-9FPPGWXF21');`}
+      </Script>
       <body>{children}</body>
     </html>
   );
