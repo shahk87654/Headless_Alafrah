@@ -250,7 +250,7 @@ export function ProductPurchase({ product, related = [] }: { product: ShopifyPro
           <a className="btn btn-outline" href={`/custom-table?product=${encodeURIComponent(product.handle)}`}>
             Request a custom size
           </a>
-          <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "971500000000"}`} target="_blank" rel="noreferrer">
+          <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "971558410712"}`} target="_blank" rel="noreferrer">
             Ask on WhatsApp
           </a>
         </div>
@@ -272,7 +272,7 @@ export function ProductPurchase({ product, related = [] }: { product: ShopifyPro
         <div><ShieldCheck size={22} /><span><strong>Premium stone</strong><small>Selected for lasting beauty</small></span></div>
         <div><Ruler size={22} /><span><strong>Custom sizing</strong><small>Made for your space</small></span></div>
         <div><Truck size={22} /><span><strong>Handled with care</strong><small>Delivery and placement support</small></span></div>
-        <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "971500000000"}`} target="_blank" rel="noreferrer"><MessageCircle size={22} /><span><strong>Speak to a specialist</strong><small>Advice from the workshop</small></span></a>
+        <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "971558410712"}`} target="_blank" rel="noreferrer"><MessageCircle size={22} /><span><strong>Speak to a specialist</strong><small>Advice from the workshop</small></span></a>
       </div>
       <section className="product-material-story rack">
         <div className="span-5 product-story-image">

@@ -199,7 +199,7 @@ export default function CustomTable({ initialProduct }: { initialProduct?: strin
       <section className="custom-assurances" aria-label="Custom furniture service">
         <div><Ruler size={22} /><span><strong>Made to proportion</strong><small>Scaled for your room</small></span></div>
         <div><ShieldCheck size={22} /><span><strong>Workshop reviewed</strong><small>Stone and construction checked</small></span></div>
-        <a href="https://wa.me/971500000000" target="_blank" rel="noreferrer"><MessageCircle size={22} /><span><strong>Need guidance?</strong><small>Speak with our team</small></span></a>
+        <a href="https://wa.me/971558410712" target="_blank" rel="noreferrer"><MessageCircle size={22} /><span><strong>Need guidance?</strong><small>Speak with our team</small></span></a>
       </section>
     </div>
   );

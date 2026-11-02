@@ -27,7 +27,7 @@ export default async function ContentPage({ params }: { params: Promise<{ handle
             <div>
               <span>Contact</span>
               <a href="mailto:info@alafrahtechnical.com">info@alafrahtechnical.com</a>
-              <a href="https://wa.me/971000000000" target="_blank" rel="noreferrer">WhatsApp the workshop</a>
+              <a href="https://wa.me/971558410712" target="_blank" rel="noreferrer">WhatsApp the workshop</a>
             </div>
             <div>
               <span>Typical response</span>

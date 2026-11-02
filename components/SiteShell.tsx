@@ -145,7 +145,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
           </nav>
           <div className="mobile-nav-foot">
             <Link href="/account" onClick={() => setMenuOpen(false)}>My account</Link>
-            <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "971500000000"}`} target="_blank" rel="noreferrer">WhatsApp</a>
+            <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "971558410712"}`} target="_blank" rel="noreferrer">WhatsApp</a>
           </div>
         </div>
       )}
@@ -203,7 +203,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
             <div className="foot-contact">
               <span>Dubai, UAE</span>
               <a href="mailto:info@alafrahtechnical.com">info@alafrahtechnical.com</a>
-              <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "971500000000"}`} target="_blank" rel="noreferrer">
+              <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "971558410712"}`} target="_blank" rel="noreferrer">
                 WhatsApp us
               </a>
             </div>
