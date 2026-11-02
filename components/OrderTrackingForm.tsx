@@ -17,7 +17,7 @@ function isTrackedOrder(value: unknown): value is TrackedOrder {
 
 function isErrorResponse(value: unknown): value is { error: string } {
   return (
-    Boolean(value) &&
+    value !== null &&
     typeof value === "object" &&
     "error" in value &&
     typeof value.error === "string"
