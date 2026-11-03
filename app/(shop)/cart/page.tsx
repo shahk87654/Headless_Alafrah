@@ -263,15 +263,12 @@ export default function Cart() {
             <strong>{formatPrice(total)}</strong>
           </div>
 
-          {cart.checkoutUrl ? (
-            <a className="cart-primary-action cart-checkout" href={cart.checkoutUrl}>
+          <form action="/checkout" method="post">
+            <input type="hidden" name="cartId" value={cart.id} />
+            <button className="cart-primary-action cart-checkout" type="submit">
               Secure checkout <ArrowRight size={18} />
-            </a>
-          ) : (
-            <p className="cart-checkout-error" role="alert">
-              Secure checkout is temporarily unavailable. Please contact the workshop.
-            </p>
-          )}
+            </button>
+          </form>
           <p className="cart-secure"><LockKeyhole size={14} /> Encrypted and secure payment</p>
           <div className="cart-delivery-note">
             <Truck size={19} aria-hidden="true" />

@@ -85,8 +85,18 @@ export function ProductPurchase({ product, related = [] }: { product: ShopifyPro
       );
       window.dispatchEvent(new Event("alafrah-cart-updated"));
       if (action === "buy") {
-        if (!data.checkoutUrl) throw new Error("Shopify did not return a checkout URL. Please try again.");
-        window.location.assign(data.checkoutUrl);
+        if (!data.cartId) throw new Error("Shopify did not return a cart. Please try again.");
+        const form = document.createElement("form");
+        form.method = "post";
+        form.action = "/checkout";
+        form.hidden = true;
+        const cartIdInput = document.createElement("input");
+        cartIdInput.type = "hidden";
+        cartIdInput.name = "cartId";
+        cartIdInput.value = data.cartId;
+        form.append(cartIdInput);
+        document.body.append(form);
+        form.requestSubmit();
       } else {
         router.push("/cart");
       }
