@@ -74,8 +74,8 @@ export function ProductPurchase({ product, related = [] }: { product: ShopifyPro
       });
       const data = await response.json();
       if (!response.ok || data.error) throw new Error(data.error ?? "The cart could not be updated. Try again.");
-      if (action === "buy" && !data.checkoutUrl) {
-        throw new Error(data.checkoutError ?? "Checkout is not available. Please contact the workshop.");
+      if (action === "buy" && !data.cartId) {
+        throw new Error("Shopify did not return a cart. Please try again.");
       }
       localStorage.setItem(
         "alafrah-cart",
@@ -83,7 +83,7 @@ export function ProductPurchase({ product, related = [] }: { product: ShopifyPro
       );
       window.dispatchEvent(new Event("alafrah-cart-updated"));
       if (action === "buy") {
-        window.location.assign(data.checkoutUrl);
+        window.location.assign(`/checkout?cartId=${encodeURIComponent(data.cartId)}`);
       } else {
         window.location.assign("/cart");
       }

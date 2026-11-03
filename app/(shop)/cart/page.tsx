@@ -20,6 +20,7 @@ type CartLine = {
 };
 
 type CartState = {
+  id: string;
   checkoutUrl: string | null;
   checkoutError?: string;
   totalQuantity: number;
@@ -122,6 +123,7 @@ export default function Cart() {
       if (data.lines && data.cost) {
         setCart((current) => current ? {
           ...current,
+          id: data.cartId,
           checkoutUrl: data.checkoutUrl,
           checkoutError: data.checkoutError,
           totalQuantity: data.totalQuantity,
@@ -264,7 +266,7 @@ export default function Cart() {
           </div>
 
           {cart.checkoutUrl ? (
-            <a className="cart-primary-action cart-checkout" href={cart.checkoutUrl}>
+            <a className="cart-primary-action cart-checkout" href={`/checkout?cartId=${encodeURIComponent(cart.id)}`}>
               Secure checkout <ArrowRight size={18} />
             </a>
           ) : (

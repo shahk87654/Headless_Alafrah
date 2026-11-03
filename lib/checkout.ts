@@ -18,6 +18,14 @@ function configuredCheckoutHost(value: string) {
   return parsed.host;
 }
 
+function shopifyStoreHost(value: string) {
+  const hostname = value.toLowerCase();
+  if (!/^[a-z0-9][a-z0-9-]*\.myshopify\.com$/.test(hostname)) {
+    throw new Error("SHOPIFY_STORE_DOMAIN must be a valid Shopify .myshopify.com hostname.");
+  }
+  return hostname;
+}
+
 export function resolveCheckoutUrl(checkoutUrl: string) {
   let url: URL;
   try {
@@ -46,9 +54,11 @@ export function resolveCheckoutUrl(checkoutUrl: string) {
     }
 
     if (normalizedHostname(url.hostname) === normalizedHostname(siteHostname)) {
-      throw new Error(
-        "Checkout is pointing to the storefront instead of Shopify. Configure SHOPIFY_CHECKOUT_DOMAIN and connect that domain to Shopify.",
-      );
+      const storeDomain = process.env.SHOPIFY_STORE_DOMAIN?.trim();
+      if (!storeDomain) {
+        throw new Error("Shopify checkout is pointing to the storefront and the Shopify store domain is not configured.");
+      }
+      url.host = shopifyStoreHost(storeDomain);
     }
   }
 
