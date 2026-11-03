@@ -1,30 +1,32 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
 
 export function BookmatchHero({ src, alt }: { src?: string | null; alt?: string | null }) {
   return (
-    <section className="home-hero" aria-label="Al Afrah marble furniture">
+    <section className="home-hero" aria-label="Al Afrah natural stone furniture">
+      <div className="home-hero-copy">
+        <p className="eyebrow"><span aria-hidden="true" /> Natural stone / Dubai</p>
+        <h1>Natural stone.<br /><em>Made personal.</em></h1>
+        <p>Furniture and objects shaped from natural stone, for the spaces you call home.</p>
+        <div className="home-hero-actions">
+          <Link className="btn btn-primary" href="/collections">Explore the collection <span aria-hidden="true">↗</span></Link>
+          <Link className="home-hero-secondary" href="/custom-table">Create something custom</Link>
+        </div>
+        <span className="home-hero-index"><strong>01</strong> / OBJECTS FOR LIVING</span>
+      </div>
       <div className="home-hero-media">
         {src ? (
-          <Image src={src} alt={alt ?? "Natural stone furniture in the Al Afrah workshop"} fill priority sizes="(max-width: 760px) 100vw, 72vw" />
+          <Image
+            src={src}
+            alt={alt ?? "Natural stone furniture in a considered home"}
+            fill
+            priority
+            sizes="(max-width: 700px) 100vw, 52vw"
+          />
         ) : (
           <div className="home-hero-art" />
         )}
-      </div>
-      <div className="home-hero-copy">
-        <p className="eyebrow">Dubai stone workshop</p>
-        <h1>Stone, shaped<br /><em>for living.</em></h1>
-        <p>Tables and objects finished from natural stone for a considered home.</p>
-        <div>
-          <Link className="btn btn-primary" href="/collections"><span>Shop furniture</span><b aria-hidden="true">↗</b></Link>
-          <Link className="btn btn-outline" href="/custom-table"><span>Create bespoke</span><b aria-hidden="true">↗</b></Link>
-        </div>
-        <dl className="home-hero-meta">
-          <div><dt>Workshop</dt><dd>Dubai, UAE</dd></div>
-          <div><dt>Service</dt><dd>Delivery & installation</dd></div>
-        </dl>
+        <span className="home-hero-caption"><small>AL AFRAH ATELIER</small> Crafted in Dubai</span>
       </div>
     </section>
   );

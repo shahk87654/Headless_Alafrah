@@ -37,17 +37,19 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${display.variable} ${sans.variable} ${arabic.variable}`}>
-      <Script
-        src="https://www.googletagmanager.com/gtag/js?id=G-9FPPGWXF21"
-        strategy="beforeInteractive"
-      />
-      <Script id="google-tag-config" strategy="beforeInteractive">
-        {`window.dataLayer = window.dataLayer || [];
+      <body>
+        {children}
+        <Script id="google-tag-config" strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || [];
 function gtag(){window.dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-9FPPGWXF21');`}
-      </Script>
-      <body>{children}</body>
+        </Script>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-9FPPGWXF21"
+          strategy="afterInteractive"
+        />
+      </body>
     </html>
   );
 }
