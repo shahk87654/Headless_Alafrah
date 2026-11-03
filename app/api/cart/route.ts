@@ -1,22 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { resolveCheckoutUrl } from "../../../lib/checkout";
 import { shopifyFetch } from "../../../lib/shopify";
 
 const cartFragment = `fragment CartFields on Cart { id checkoutUrl totalQuantity cost { subtotalAmount { amount currencyCode } totalAmount { amount currencyCode } } lines(first:100) { nodes { id quantity cost { amountPerQuantity { amount currencyCode } totalAmount { amount currencyCode } } merchandise { ... on ProductVariant { id title product { title handle featuredImage { url altText width height } } price { amount currencyCode } } } } } }`;
 
 function serializeCart(cart: any) {
-  let checkoutUrl: string | null = null;
-  let checkoutError: string | undefined;
-  try {
-    checkoutUrl = resolveCheckoutUrl(cart.checkoutUrl);
-  } catch (error) {
-    checkoutError = error instanceof Error ? error.message : "Checkout URL is unavailable.";
-  }
-
   return {
     cartId: cart.id,
-    checkoutUrl,
-    checkoutError,
+    checkoutUrl: cart.checkoutUrl,
     totalQuantity: cart.totalQuantity,
     cost: cart.cost,
     lines: cart.lines.nodes,
@@ -88,7 +78,6 @@ export async function GET(request: NextRequest) {
         ? {
             id: cart.id,
             checkoutUrl: serialized.checkoutUrl,
-            checkoutError: serialized.checkoutError,
             totalQuantity: serialized.totalQuantity,
             cost: serialized.cost,
             lines: serialized.lines,

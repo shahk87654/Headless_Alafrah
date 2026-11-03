@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ChevronDown, Heart, Minus, Plus, ShieldCheck, Truck, Ruler, MessageCircle, Maximize2, Layers3, PencilRuler } from "lucide-react";
 import type { ShopifyProduct } from "../lib/catalog";
@@ -9,6 +10,7 @@ import { hexForMaterial, stoneByName } from "../lib/stones";
 import { ProductCard } from "./product/ProductCard";
 
 export function ProductPurchase({ product, related = [] }: { product: ShopifyProduct; related?: ShopifyProduct[] }) {
+  const router = useRouter();
   const variants = product.variants?.nodes ?? [];
   const initialVariant = variants.find((variant) => variant.availableForSale) ?? variants[0];
   const [variantId, setVariantId] = useState(initialVariant?.id ?? "");
@@ -83,9 +85,10 @@ export function ProductPurchase({ product, related = [] }: { product: ShopifyPro
       );
       window.dispatchEvent(new Event("alafrah-cart-updated"));
       if (action === "buy") {
-        window.location.assign(`/checkout?cartId=${encodeURIComponent(data.cartId)}`);
+        if (!data.checkoutUrl) throw new Error("Shopify did not return a checkout URL. Please try again.");
+        window.location.assign(data.checkoutUrl);
       } else {
-        window.location.assign("/cart");
+        router.push("/cart");
       }
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "The cart could not be updated. Try again.");
