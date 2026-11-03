@@ -20,7 +20,8 @@ type CartLine = {
 };
 
 type CartState = {
-  checkoutUrl: string;
+  checkoutUrl: string | null;
+  checkoutError?: string;
   totalQuantity: number;
   cost?: {
     subtotalAmount: { amount: string; currencyCode: string };
@@ -122,6 +123,7 @@ export default function Cart() {
         setCart((current) => current ? {
           ...current,
           checkoutUrl: data.checkoutUrl,
+          checkoutError: data.checkoutError,
           totalQuantity: data.totalQuantity,
           cost: data.cost,
           lines: data.lines,
@@ -261,9 +263,15 @@ export default function Cart() {
             <strong>{formatPrice(total)}</strong>
           </div>
 
-          <a className="cart-primary-action cart-checkout" href={cart.checkoutUrl}>
-            Secure checkout <ArrowRight size={18} />
-          </a>
+          {cart.checkoutUrl ? (
+            <a className="cart-primary-action cart-checkout" href={cart.checkoutUrl}>
+              Secure checkout <ArrowRight size={18} />
+            </a>
+          ) : (
+            <p className="cart-checkout-error" role="alert">
+              {cart.checkoutError ?? "Secure checkout is temporarily unavailable. Please contact the workshop."}
+            </p>
+          )}
           <p className="cart-secure"><LockKeyhole size={14} /> Encrypted and secure payment</p>
           <div className="cart-delivery-note">
             <Truck size={19} aria-hidden="true" />

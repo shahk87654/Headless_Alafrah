@@ -74,6 +74,9 @@ export function ProductPurchase({ product, related = [] }: { product: ShopifyPro
       });
       const data = await response.json();
       if (!response.ok || data.error) throw new Error(data.error ?? "The cart could not be updated. Try again.");
+      if (action === "buy" && !data.checkoutUrl) {
+        throw new Error(data.checkoutError ?? "Checkout is not available. Please contact the workshop.");
+      }
       localStorage.setItem(
         "alafrah-cart",
         JSON.stringify({ id: data.cartId, checkoutUrl: data.checkoutUrl, totalQuantity: data.totalQuantity }),
