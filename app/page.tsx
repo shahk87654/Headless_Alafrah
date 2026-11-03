@@ -20,6 +20,13 @@ const journalEntries = [
   { category: "Know your stone", title: "The origins of beige travertine", handle: "the-countries-made-beige-travertine-marble" },
 ];
 
+const proofPoints = [
+  "Natural stone, always unique",
+  "Crafted in our Dubai workshop",
+  "Delivered across the UAE",
+  "Made-to-order options",
+];
+
 export default async function Home() {
   let collections: ShopifyCollection[] = [];
   let products: ShopifyProduct[] = [];
@@ -57,6 +64,9 @@ export default async function Home() {
   const heroProduct = products.find((product) =>
     /table|console|desk/i.test(`${product.title} ${product.productType}`),
   ) ?? products[0];
+  const atelierProducts = products
+    .filter((product): product is ShopifyProduct & { featuredImage: NonNullable<ShopifyProduct["featuredImage"]> } => Boolean(product.featuredImage))
+    .slice(0, 3);
 
   return (
     <SiteShell>
@@ -66,10 +76,15 @@ export default async function Home() {
       />
 
       <section className="home-proof rack" aria-label="The Al Afrah difference">
-        <p>Natural stone, always unique</p>
-        <p>Crafted in our Dubai workshop</p>
-        <p>Delivered across the UAE</p>
-        <p>Made-to-order options</p>
+        <div className="home-proof-track">
+          {[false, true].map((duplicate) => (
+            <div className="home-proof-set" aria-hidden={duplicate || undefined} key={String(duplicate)}>
+              {proofPoints.map((point) => (
+                <p key={point}>{point}<span aria-hidden="true">✳</span></p>
+              ))}
+            </div>
+          ))}
+        </div>
       </section>
 
       <section className="home-categories section" aria-labelledby="home-collections-title">
@@ -140,6 +155,69 @@ export default async function Home() {
         </div>
       </section>
 
+      {atelierProducts.length > 0 && (
+        <section className="home-atelier section" aria-labelledby="home-atelier-title">
+          <div className="home-atelier-heading rack">
+            <div className="span-8">
+              <p className="eyebrow">Selected by the atelier</p>
+              <h2 id="home-atelier-title">One-of-a-kind, by nature.</h2>
+            </div>
+            <p className="span-4">Look closer at the movement, colour and character that make every stone piece its own.</p>
+          </div>
+          <div className="home-atelier-grid rack">
+            {atelierProducts.map((product, index) => (
+              <Link className={`home-atelier-piece home-atelier-piece-${index + 1}`} href={`/products/${product.handle}`} key={product.id}>
+                <Image
+                  src={product.featuredImage.url}
+                  alt={product.featuredImage.altText ?? product.title}
+                  fill
+                  sizes="(max-width: 700px) 85vw, (max-width: 1100px) 50vw, 33vw"
+                />
+                <span className="home-atelier-piece-number">0{index + 1} / THE ATELIER EDIT</span>
+                <span className="home-atelier-piece-caption">
+                  <span><strong>{product.title}</strong><em>{product.productType || "Natural stone, thoughtfully shaped"}</em></span>
+                  <b aria-hidden="true">↗</b>
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <section className="home-process section" aria-labelledby="home-process-title">
+        <div className="home-process-heading rack">
+          <div className="span-8">
+            <p className="eyebrow">A considered process</p>
+            <h2 id="home-process-title">From your first idea to a place at home.</h2>
+          </div>
+          <p className="span-4">Good things take shape with the right details. We’ll help you make each choice with confidence.</p>
+        </div>
+        <ol className="home-process-steps rack">
+          <li>
+            <span className="home-process-number">01</span>
+            <span className="home-process-mark" aria-hidden="true">✳</span>
+            <h3>Find your stone</h3>
+            <p>Explore natural colours, veining and finishes to find the character that feels like yours.</p>
+          </li>
+          <li>
+            <span className="home-process-number">02</span>
+            <span className="home-process-mark" aria-hidden="true">◇</span>
+            <h3>Shape the details</h3>
+            <p>Talk through size, shape and the little details with our team in the Dubai workshop.</p>
+          </li>
+          <li>
+            <span className="home-process-number">03</span>
+            <span className="home-process-mark" aria-hidden="true">↗</span>
+            <h3>Bring it home</h3>
+            <p>We’ll help arrange careful delivery and placement across the UAE.</p>
+          </li>
+        </ol>
+        <div className="home-process-footer rack">
+          <Link className="home-process-link" href="/custom-table">Start your custom piece <span aria-hidden="true">↗</span></Link>
+          <span>MADE WITH INTENTION / DUBAI, UAE</span>
+        </div>
+      </section>
+
       <section className="home-journal rack" aria-labelledby="home-journal-title">
         <header className="home-journal-heading span-4">
           <p className="eyebrow">A little reading</p>
@@ -168,6 +246,11 @@ export default async function Home() {
           </div>
         </div>
         <div className="home-questions span-7" aria-label="Common questions">
+          <header className="home-questions-heading">
+            <p className="eyebrow">A few useful details</p>
+            <h2>Good to know.</h2>
+            <p>Still deciding? Here are a few things customers often ask us.</p>
+          </header>
           <details>
             <summary><span>01</span> Can I request custom dimensions?<b aria-hidden="true">+</b></summary>
             <p>Yes. Share your room measurements and preferred stone through our <Link href="/custom-table">custom design service</Link>.</p>
