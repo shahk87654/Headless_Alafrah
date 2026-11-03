@@ -3769,17 +3769,33 @@ h3 {
 .home-questions details > p { font-size: 14px; }
 
 @media (max-width: 700px) {
-  .home-hero { height: auto; grid-template-rows: 270px auto; }
-  .home-hero-media { min-height: 270px; }
-  .home-hero-copy { padding: 30px var(--margin) 26px; }
+  .home-hero {
+    height: auto;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: clamp(210px, 70vw, 270px) auto;
+  }
+  .home-hero-media { grid-column: 1; grid-row: 1; min-height: 0; }
+  .home-hero-copy { grid-column: 1; grid-row: 2; padding: 30px var(--margin) 26px; }
   .home-hero-copy .eyebrow { font-size: 10px; }
-  .home-hero-copy h1 { font-size: clamp(3.2rem, 12vw, 3.8rem); }
+  .home-hero-copy h1 { font-size: clamp(2.5rem, 12vw, 3.5rem); }
   .home-hero-copy > p:not(.eyebrow) { font-size: 14px; }
-  .home-hero-actions { gap: 16px; margin-top: 19px; }
-  .home-hero-copy .btn { min-height: 46px; padding-inline: 12px; font-size: 11px; }
+  .home-hero-actions {
+    width: 100%;
+    display: grid;
+    justify-items: start;
+    gap: 14px;
+    margin-top: 19px;
+  }
+  .home-hero-copy .btn {
+    width: 100%;
+    min-height: 46px;
+    padding-inline: 12px;
+    font-size: 11px;
+  }
   .home-hero-secondary { font-size: 11px; }
   .home-hero-index { margin-top: 22px; font-size: 9px; }
   .home-hero-caption { padding: 10px 12px; font-size: 10px; }
+  .home-materials-inner { grid-template-columns: minmax(0, 1fr); }
   .home-proof,
   .home-proof p { min-height: 50px; }
   .home-proof p { padding-left: 12px; font-size: 10px; }
