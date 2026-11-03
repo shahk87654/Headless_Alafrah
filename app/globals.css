@@ -3456,7 +3456,7 @@ h3 {
   transition: transform .3s ease;
 }
 .home-category-card:hover .home-category-image img,
-.home-category-card:focus-visible .home-category-image img { transform: scale(1.025); }
+.home-category-card:focus-visible .home-category-image img { transform: scale(1.05); }
 .home-category-image.home-category-art {
   position: relative;
   inset: auto;
@@ -3485,7 +3485,16 @@ h3 {
   font-weight: 500;
 }
 .home-category-label em { color: #7a7c73; font-size: 9px; }
-.home-category-label > b { color: #778273; font-size: 11px; }
+.home-category-label > b {
+  color: #778273;
+  font-size: 11px;
+  transition: color .3s ease, transform .3s ease;
+}
+.home-category-card:hover .home-category-label > b,
+.home-category-card:focus-visible .home-category-label > b {
+  color: #344638;
+  transform: translate(3px, -3px);
+}
 .home-featured { background: #f4f3ee; }
 .home-featured .product-grid { gap: 12px; }
 .home-featured .product-card { gap: 6px; }
@@ -6401,8 +6410,9 @@ h3 {
     repeating-linear-gradient(135deg, transparent 0 18px, rgb(255 255 255 / .08) 18px 19px);
 }
 
-.collection-editorial-card a:hover img {
-  transform: scale(1.025);
+.collection-editorial-card a:hover img,
+.collection-editorial-card a:focus-visible img {
+  transform: scale(1.05);
 }
 
 .collection-editorial-meta {
@@ -6418,6 +6428,13 @@ h3 {
   gap: var(--space-2);
   background: rgb(241 242 239 / .94);
   backdrop-filter: blur(12px);
+  transition: transform .3s ease, background-color .3s ease;
+}
+
+.collection-editorial-card a:hover .collection-editorial-meta,
+.collection-editorial-card a:focus-visible .collection-editorial-meta {
+  transform: translateY(-4px);
+  background: rgb(255 255 252 / .97);
 }
 
 .collection-editorial-meta h2 {
@@ -6440,6 +6457,14 @@ h3 {
   place-items: center;
   border: 1px solid rgb(22 24 27 / .24);
   border-radius: 50%;
+  transition: transform .3s ease, background-color .3s ease, color .3s ease;
+}
+
+.collection-editorial-card a:hover .collection-editorial-arrow,
+.collection-editorial-card a:focus-visible .collection-editorial-arrow {
+  transform: translate(3px, -3px);
+  background: var(--marquina);
+  color: var(--calacatta);
 }
 
 .collection-detail-hero {

@@ -115,6 +115,7 @@ export function ProductPurchase({ product, related = [] }: { product: ShopifyPro
                   alt={image.altText ?? `${product.title} view ${index + 1}`}
                   width={72}
                   height={90}
+                  loading={index < 5 ? "eager" : "lazy"}
                 />
               </button>
             ))}

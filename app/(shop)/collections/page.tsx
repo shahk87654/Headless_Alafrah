@@ -37,6 +37,7 @@ export default async function Collections() {
                     width={collection.image.width ?? 800}
                     height={collection.image.height ?? 600}
                     sizes={index === 0 ? "(max-width: 760px) 100vw, 58vw" : "(max-width: 760px) 50vw, 30vw"}
+                    priority={index === 0}
                   />
                 ) : (
                   <span className="collection-editorial-fallback" aria-hidden="true" />
