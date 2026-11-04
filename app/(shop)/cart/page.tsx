@@ -195,15 +195,16 @@ export default function Cart() {
     <section className="cart-page">
       <header className="cart-heading">
         <div>
-          <p className="eyebrow">Your selection</p>
+          <p className="eyebrow">Your selection <span>— Curated to last</span></p>
           <h1>Shopping bag <span>{cart.totalQuantity}</span></h1>
+          <p className="cart-heading-note">Natural stone, thoughtfully chosen for your home.</p>
         </div>
         <Link className="cart-back-link" href="/collections"><ArrowLeft size={16} /> Continue shopping</Link>
       </header>
 
       <div className="cart-layout">
         <ul className="cart-lines" aria-label="Cart items">
-          {cart.lines.map((line) => (
+          {cart.lines.map((line, index) => (
             <li className="cart-line" key={line.id}>
               <Link className="cart-line-image" href={`/products/${line.merchandise.product.handle}`}>
                 {line.merchandise.product.featuredImage ? (
@@ -219,6 +220,7 @@ export default function Cart() {
               <div className="cart-line-main">
                 <div className="cart-line-title">
                   <div>
+                    <p className="cart-line-number">Piece {String(index + 1).padStart(2, "0")}</p>
                     <Link href={`/products/${line.merchandise.product.handle}`}>{line.merchandise.product.title}</Link>
                     {line.merchandise.title !== "Default Title" && <p>{line.merchandise.title}</p>}
                     <p className="cart-line-unit-price">
@@ -248,7 +250,7 @@ export default function Cart() {
         </ul>
 
         <aside className="cart-summary">
-          <p className="eyebrow">Order summary</p>
+          <p className="eyebrow">Order summary <span>{cart.totalQuantity} {cart.totalQuantity === 1 ? "piece" : "pieces"}</span></p>
           <div className="cart-summary-total">
             <span>Subtotal</span>
             <strong>{formatPrice(subtotal)}</strong>

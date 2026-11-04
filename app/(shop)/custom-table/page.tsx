@@ -53,9 +53,10 @@ export default function CustomTable({ initialProduct }: { initialProduct?: strin
   return (
     <div className="custom-table-page">
       <header className="custom-table-heading">
-        <p className="eyebrow">Bespoke furniture studio</p>
-        <h1>Design your table</h1>
-        <p>Configure the proportions, stone and finish. Our workshop will confirm the final details and quote.</p>
+        <p className="eyebrow"><span /> Bespoke furniture studio <span className="custom-heading-edition">Dubai · Made to order</span></p>
+        <h1>A table, your way.<br /><em>Made in stone.</em></h1>
+        <p>Shape the piece around your room. Choose the form, proportions and natural stone; our Dubai workshop will refine the details with you.</p>
+        <div className="custom-heading-foot"><span>01 — 04 / DESIGN YOUR PIECE</span><span>Natural stone · Made to measure</span></div>
       </header>
 
       <section className="custom-table-builder">

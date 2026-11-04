@@ -3,7 +3,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, Search, ShoppingBag, User, X } from "lucide-react";
+import { Cookie, Menu, Search, ShoppingBag, User, X } from "lucide-react";
 
 const NAV = [
   ["Home", "/"],
@@ -219,11 +219,16 @@ export function SiteShell({ children }: { children: ReactNode }) {
         </div>
       </footer>
       {!cookieChoice && (
-        <aside className="cookie" aria-label="Cookie choices">
-          <p>We use cookies to keep the cart and measure site use.</p>
-          <button className="btn btn-primary" type="button" onClick={() => { localStorage.setItem("alafrah-cookie-choice", "accept"); setCookieChoice(true); }}>Accept</button>
-          <button className="btn btn-outline" type="button" onClick={() => { localStorage.setItem("alafrah-cookie-choice", "reject"); setCookieChoice(true); }}>Reject</button>
-          <button className="btn btn-ghost" type="button" onClick={() => { localStorage.setItem("alafrah-cookie-choice", "choose"); setCookieChoice(true); }}>Choose</button>
+        <aside className="cookie" aria-label="Cookie choices" aria-describedby="cookie-description">
+          <span className="cookie-mark" aria-hidden="true"><Cookie size={20} strokeWidth={1.7} /></span>
+          <div className="cookie-copy">
+            <p className="cookie-title">Your privacy matters</p>
+            <p id="cookie-description">We use cookies to keep your cart working and understand how our store is used.</p>
+          </div>
+          <div className="cookie-actions">
+            <button className="btn btn-outline" type="button" onClick={() => { localStorage.setItem("alafrah-cookie-choice", "reject"); setCookieChoice(true); }}>Reject</button>
+            <button className="btn btn-primary" type="button" onClick={() => { localStorage.setItem("alafrah-cookie-choice", "accept"); setCookieChoice(true); }}>Accept</button>
+          </div>
         </aside>
       )}
     </>

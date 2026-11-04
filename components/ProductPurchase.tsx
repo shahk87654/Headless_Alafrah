@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ChevronDown, Heart, Minus, Plus, ShieldCheck, Truck, Ruler, MessageCircle, Maximize2, Layers3, PencilRuler } from "lucide-react";
+import { ChevronDown, Heart, LoaderCircle, Minus, Plus, ShieldCheck, Truck, Ruler, MessageCircle, Maximize2, Layers3, PencilRuler } from "lucide-react";
 import type { ShopifyProduct } from "../lib/catalog";
 import { hexForMaterial, stoneByName } from "../lib/stones";
 import { ProductCard } from "./product/ProductCard";
@@ -15,7 +15,8 @@ export function ProductPurchase({ product, related = [] }: { product: ShopifyPro
   const initialVariant = variants.find((variant) => variant.availableForSale) ?? variants[0];
   const [variantId, setVariantId] = useState(initialVariant?.id ?? "");
   const [quantity, setQuantity] = useState(1);
-  const [busy, setBusy] = useState(false);
+  const [pendingAction, setPendingAction] = useState<"add" | "buy" | null>(null);
+  const busy = pendingAction !== null;
   const [message, setMessage] = useState("");
   const [activeImage, setActiveImage] = useState(0);
   const [zoomOpen, setZoomOpen] = useState(false);
@@ -65,7 +66,7 @@ export function ProductPurchase({ product, related = [] }: { product: ShopifyPro
       setMessage("This product has no available variant.");
       return;
     }
-    setBusy(true);
+    setPendingAction(action);
     setMessage("");
     try {
       const savedCart = JSON.parse(localStorage.getItem("alafrah-cart") ?? "null") as { id?: string } | null;
@@ -103,7 +104,7 @@ export function ProductPurchase({ product, related = [] }: { product: ShopifyPro
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "The cart could not be updated. Try again.");
     } finally {
-      setBusy(false);
+      setPendingAction(null);
     }
   }
 
@@ -254,8 +255,18 @@ export function ProductPurchase({ product, related = [] }: { product: ShopifyPro
               </div>
             </div>
             <div className="purchase-actions">
-              <button className="btn btn-primary" type="button" disabled={busy || !product.availableForSale} onClick={() => submit("add")}>
-                Add to cart
+              <button
+                className="btn btn-primary"
+                type="button"
+                disabled={busy || !product.availableForSale}
+                aria-busy={pendingAction === "add"}
+                onClick={() => submit("add")}
+              >
+                {pendingAction === "add" ? (
+                  <><LoaderCircle className="purchase-loading-icon" size={17} /> Adding to cart</>
+                ) : (
+                  "Add to cart"
+                )}
               </button>
               <a className="btn btn-outline" href={`/custom-table?product=${encodeURIComponent(product.handle)}`}>
                 Request a custom size

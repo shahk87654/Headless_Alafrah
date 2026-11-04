@@ -16,9 +16,13 @@ export default function Magazine() {
           <p>Volume 01 / 2026</p>
         </div>
         <div className="journal-heading-grid">
-          <h1>Material<br /><em>in focus</em></h1>
-          <p>Ideas, objects and practical knowledge from our Dubai stone workshop.</p>
+          <h1>Material<br /><em>has a story.</em></h1>
+          <div className="journal-heading-intro">
+            <p>Ideas, objects and practical knowledge from our Dubai stone workshop.</p>
+            <span>Objects with character. Knowledge with purpose.</span>
+          </div>
         </div>
+        <div className="journal-heading-index"><span>01 / THE JOURNAL</span><span>STONE · SPACE · CRAFT</span></div>
       </header>
       <section className="journal-grid" aria-label="Journal articles">
         {posts.map((post, index) => (
