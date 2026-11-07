@@ -4,7 +4,7 @@ import { SiteShell } from "../components/SiteShell";
 import InteractiveHome from "../components/InteractiveHome";
 import { BookmatchHero } from "../components/home/BookmatchHero";
 import { ProductCard } from "../components/product/ProductCard";
-import { getCollections, getProducts, type ShopifyCollection, type ShopifyProduct } from "../lib/catalog";
+import { getCollection, getCollections, getProducts, type ShopifyCollection, type ShopifyProduct } from "../lib/catalog";
 import { isShopifyConfigured } from "../lib/shopify";
 
 const categoryDetails = [
@@ -30,11 +30,13 @@ const proofPoints = [
 export default async function Home() {
   let collections: ShopifyCollection[] = [];
   let products: ShopifyProduct[] = [];
+  let accessoriesCollection: ShopifyCollection & { products: { nodes: ShopifyProduct[] } } | null = null;
 
   if (isShopifyConfigured) {
-    const [collectionResult, productResult] = await Promise.allSettled([
+    const [collectionResult, productResult, accessoriesResult] = await Promise.allSettled([
       getCollections(12),
       getProducts(8),
+      getCollection("marble-accessories", 100),
     ]);
 
     if (collectionResult.status === "fulfilled") {
@@ -48,7 +50,21 @@ export default async function Home() {
     } else {
       console.error("Failed to load homepage products from Shopify:", productResult.reason);
     }
+
+    if (accessoriesResult.status === "fulfilled") {
+      accessoriesCollection = accessoriesResult.value.collection;
+    } else {
+      console.error("Failed to load homepage kitchen accessories from Shopify:", accessoriesResult.reason);
+    }
   }
+
+  const kitchenProducts = (accessoriesCollection?.products.nodes ?? [])
+    .filter((product) =>
+      /kitchen|tray|bowl|board|platter|serving|coaster|salt|pepper|mortar|pestle|spoon|utensil|oil|vinegar|fruit|canister|jar/i.test(
+        `${product.title} ${product.description} ${product.productType} ${(product.tags ?? []).join(" ")}`,
+      ),
+    )
+    .slice(0, 4);
 
   const categories = categoryDetails.map((category) => {
     const collectionImage = collections.find((collection) => collection.handle === category.handle)?.image;
@@ -139,6 +155,25 @@ export default async function Home() {
       )}
 
       <InteractiveHome />
+
+      {kitchenProducts.length > 0 && (
+        <section className="home-featured home-kitchen-edit section" aria-labelledby="home-kitchen-title">
+          <div className="home-section-heading rack">
+            <div className="span-8">
+              <p className="eyebrow">For the kitchen</p>
+              <h2 id="home-kitchen-title">Everyday pieces, considered.</h2>
+            </div>
+            <Link className="span-4 home-view-link" href="/collections/marble-accessories">Shop kitchen accessories <span aria-hidden="true">↗</span></Link>
+          </div>
+          <div className="rack">
+            <ul className="span-12 product-grid">
+              {kitchenProducts.map((product) => (
+                <li key={product.id}><ProductCard product={product} /></li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
 
       <section className="home-custom rack" aria-labelledby="home-custom-title">
         <div className="home-custom-copy span-6">

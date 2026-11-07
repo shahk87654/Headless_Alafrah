@@ -8568,6 +8568,54 @@ h3 {
   }
 }
 
+.home-kitchen-edit {
+  padding-block: 32px;
+}
+
+.home-kitchen-edit .home-section-heading {
+  margin-bottom: 20px;
+}
+
+.home-kitchen-edit .home-section-heading h2 {
+  margin-top: 6px;
+  font-size: clamp(2rem, 3.8vw, 3.6rem);
+  line-height: .98;
+}
+
+.home-kitchen-edit .product-grid {
+  gap: 12px;
+}
+
+.home-kitchen-edit .product-grid > li {
+  padding: 8px 8px 12px;
+}
+
+.home-kitchen-edit .product-grid > li:nth-child(even) {
+  transform: none;
+}
+
+.home-kitchen-edit .product-grid > li:nth-child(even):hover {
+  transform: translateY(-5px);
+}
+
+.home-kitchen-edit + .home-custom {
+  margin-top: 36px;
+}
+
+@media (max-width: 760px) {
+  .home-kitchen-edit {
+    padding-block: 26px;
+  }
+
+  .home-kitchen-edit .home-section-heading {
+    margin-bottom: 16px;
+  }
+
+  .home-kitchen-edit + .home-custom {
+    margin-top: 28px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .home-proof-track { width: 100%; animation: none; }
   .home-proof-set[aria-hidden="true"] { display: none; }
